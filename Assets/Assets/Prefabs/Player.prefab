@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3782091541165865191}
   m_Layer: 0
-  m_Name: Camera Target
+  m_Name: Aim Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,6 +82,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e4fb882880322d44a249ce45be785da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collectionRange: 0
+  _aimTarget: {fileID: 3782091541165865191}
+  _collectableLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  _pickUpLength: 5
 --- !u!114 &5425504619416401527
 MonoBehaviour:
   m_ObjectHideFlags: 0

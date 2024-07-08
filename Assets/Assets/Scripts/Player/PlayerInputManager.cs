@@ -59,8 +59,6 @@ public class PlayerInputManager : MonoBehaviour
             Vector3 localPos = _camTarget.localPosition;
             localPos.y = Mathf.Clamp(localPos.y + delta, _camTargetHeightMinMax.x, _camTargetHeightMinMax.y);
             _camTarget.localPosition = localPos;
-
-            Debug.Log($"input -> {_input.Look.x} {_input.Look.y}");
         }
 
         if(_input.IsMoving)
