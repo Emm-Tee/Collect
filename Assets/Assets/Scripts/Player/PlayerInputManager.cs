@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,19 +12,23 @@ public class PlayerInputManager : MonoBehaviour
         public Vector2 Look;
     }
 
+
     #region Properties
     #endregion
 
     #region Fields
     [SerializeField] private CharacterController _characterController;
+    [SerializeField] private Transform _camTarget;
 
     [Space]
 
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _turnSpeed;
+    [Header("Movement")]
+    [SerializeField] private float _moveSpeed = 10;
+    [SerializeField] private float _lookXSensitivity = 50;
+    [SerializeField] private float _lookYSensitivity = 5;
+    [SerializeField] private Vector2 _camTargetHeightMinMax = new Vector2(-1, 2);
 
     private InputStruct _input;
-
     #endregion
 
     #region Unity Methods
@@ -42,18 +44,23 @@ public class PlayerInputManager : MonoBehaviour
     #region Protected Methods
     #endregion
 
-    public float ang;
-    public Vector3 axis;
-
-    public Vector3 angs;
-
     #region Private Methods
     private void UpdateMovement()
     {
         if (_input.IsLooking)
         {
-            Quaternion rotationDelta = Quaternion.AngleAxis(_input.Look.x * _turnSpeed * Time.deltaTime, Vector3.up);
+            //x
+            Quaternion rotationDelta = Quaternion.AngleAxis(_input.Look.x * _lookXSensitivity * Time.deltaTime, Vector3.up);
             transform.rotation *= rotationDelta;
+
+            //y
+            float delta = _input.Look.y * _lookYSensitivity * Time.deltaTime;
+
+            Vector3 localPos = _camTarget.localPosition;
+            localPos.y = Mathf.Clamp(localPos.y + delta, _camTargetHeightMinMax.x, _camTargetHeightMinMax.y);
+            _camTarget.localPosition = localPos;
+
+            Debug.Log($"input -> {_input.Look.x} {_input.Look.y}");
         }
 
         if(_input.IsMoving)
@@ -75,6 +82,8 @@ public class PlayerInputManager : MonoBehaviour
 
     public void UpdateLookInput(Vector2 input)
     {
+        //TODO: set up mouse specific
+
         _input.Look = input;
     }
     #endregion
