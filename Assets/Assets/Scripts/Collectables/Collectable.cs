@@ -8,15 +8,41 @@ public class Collectable : MonoBehaviour
     #endregion
 
     #region Fields
+    private IHoldCollectable _holder;
+    private bool _heldByRepository;
+    private Transform _holderHoldingPosition;
     #endregion
 
     #region Unity Methods
+    private void Update()
+    {
+        if (_holderHoldingPosition != null)
+        {
+            transform.position = _holderHoldingPosition.position;
+        }
+    }
     #endregion
 
     #region Public Methods
-    public void PlayerPickedUp()
+    public void PlayerPickedUp(Player player)
     {
+        if (_heldByRepository)
+        {
+            return;
+        }
 
+        GetPickedUp(player, true);
+    }
+   
+    public void RepositoryPickedUp(Repository repository)
+    {
+        //held by player
+        if (!_heldByRepository && _holder != null)
+        {
+            _holder.ReleaseCollectable(this);
+        }
+
+        GetPickedUp(repository, true);
     }
     #endregion
 
@@ -24,6 +50,15 @@ public class Collectable : MonoBehaviour
     #endregion
 
     #region Private Methods
+    private void GetPickedUp(IHoldCollectable holder, bool isRepository)
+    {
+        _holder = holder;
+        _heldByRepository = isRepository;
+
+        _holderHoldingPosition = _holder.GetHoldingPosition();
+
+        _holder.PickUpCollectable(this);
+    }
     #endregion
 
     #region Event Callbacks

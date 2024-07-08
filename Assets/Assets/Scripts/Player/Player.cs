@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IHoldCollectable
 {
     #region Properties
     #endregion
@@ -22,6 +22,20 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Public Methods
+    public void PickUpCollectable(Collectable collectable)
+    {
+        _heldCollectable = collectable;
+    }
+
+    public void ReleaseCollectable(Collectable collectable)
+    {
+        _heldCollectable = null;
+    }
+
+    public Transform GetHoldingPosition()
+    {
+        return _aimTarget;
+    }
     #endregion
 
     #region Protected Methods
@@ -50,11 +64,7 @@ public class Player : MonoBehaviour
 
     private void PickupCollectable(Collectable collectable)
     {
-        _heldCollectable = collectable;
-
-        _heldCollectable.transform.SetParent(_aimTarget);
-
-        collectable.PlayerPickedUp();
+        collectable.PlayerPickedUp(this);
     }
     #endregion
 
