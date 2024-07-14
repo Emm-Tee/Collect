@@ -2,16 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Repository : MonoBehaviour, IHoldCollectable
+public class Repository : AttributeHolder, IHoldCollectable
 {
     #region Properties
     #endregion
 
     #region Fields
-    [SerializeField] private RepositoryAttribute _attribute;
-
-    [Space]
-
     [SerializeField] private float _detectionRadius;
 
     [SerializeField] private Transform _collectableHoldingPoint;
@@ -45,6 +41,11 @@ public class Repository : MonoBehaviour, IHoldCollectable
     #endregion
 
     #region Public Methods
+    public Attribute GetAttribute()
+    {
+        return _attribute;
+    }
+
     public void PickUpCollectable(Collectable collectable)
     {
         _heldCollectable = collectable;
@@ -58,11 +59,6 @@ public class Repository : MonoBehaviour, IHoldCollectable
     public Transform GetHoldingPosition()
     {
         return _collectableHoldingPoint;
-    }
-
-    public RepositoryAttribute GetRepositoryAttribute()
-    {
-        return _attribute;
     }
     #endregion
 

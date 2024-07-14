@@ -2,20 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Collectable : MonoBehaviour
+public class Collectable : AttributeHolder
 {
     #region Constants
     private float PickUpCooldownDuration = 2f;
     #endregion
 
     #region Properties
-    public CollectableAttribute Attribute => _attribute;
     public bool InPickUpBuffer => _pickUpBuffer > 0;
     public IHoldCollectable CurrentHolder => _holder;
     #endregion
 
     #region Fields
-    [SerializeField] private CollectableAttribute _attribute;
 
     private IHoldCollectable _holder;
     private Transform _holderHoldingPosition;

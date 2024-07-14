@@ -263,6 +263,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5b9698741c236c48943a6d87587c613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attribute: {fileID: 11400000, guid: 471499f296c61394eaacaafdc5232747, type: 2}
+  _decoratedRenderers:
+  - {fileID: 371474139}
+  _materialPrefab: {fileID: 2100000, guid: e7ac097cad37dfc4ab782667bc812c2f, type: 2}
   _detectionRadius: 1
   _collectableHoldingPoint: {fileID: 2008109721}
 --- !u!4 &281718377
@@ -369,8 +373,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.08892886, y: 0, z: 0, w: 0.996038}
-  m_LocalPosition: {x: 1, y: 2.4, z: -3}
+  m_LocalRotation: {x: 0.08892885, y: 0, z: 0, w: 0.996038}
+  m_LocalPosition: {x: 1, y: 2.48, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1333,6 +1337,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f8ba872c6ce5f3428e3245358804478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attribute: {fileID: 11400000, guid: 471499f296c61394eaacaafdc5232747, type: 2}
+  _decoratedRenderers:
+  - {fileID: 1194223132}
+  _materialPrefab: {fileID: 2100000, guid: e7ac097cad37dfc4ab782667bc812c2f, type: 2}
 --- !u!135 &1194223131
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1988,7 +1996,7 @@ PrefabInstance:
     - target: {fileID: 2308245766909677463, guid: f9866720c6f10284c8fdf7d26c898c3d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5
+      value: 1.58
       objectReference: {fileID: 0}
     - target: {fileID: 2308245766909677463, guid: f9866720c6f10284c8fdf7d26c898c3d,
         type: 3}

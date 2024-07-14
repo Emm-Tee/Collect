@@ -4,12 +4,6 @@ using UnityEngine;
 
 public interface IHoldCollectable
 {
-    #region Properties
-    #endregion
-
-    #region Fields
-    #endregion
-
     #region Unity Methods
     #endregion
 
@@ -19,7 +13,7 @@ public interface IHoldCollectable
     public void ReleaseCollectable(Collectable collectable);
 
     public Transform GetHoldingPosition();
-    public RepositoryAttribute GetRepositoryAttribute();
+    public Attribute GetAttribute();
     #endregion
 
     #region Protected Methods
