@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IHoldCollectable
@@ -6,6 +7,8 @@ public class Player : MonoBehaviour, IHoldCollectable
     #endregion
 
     #region Fields
+    [SerializeField] private CollectionManager _collectionManager;
+
     [SerializeField] private Attribute _attribute;
 
     [Header("Collectable")]
@@ -73,7 +76,7 @@ public class Player : MonoBehaviour, IHoldCollectable
     {
         if(CollectionManager.CanCollect(collectable, this))
         {
-            CollectionManager.CollectablePickedUp(collectable, this);
+            _collectionManager.CollectablePickedUp?.Invoke(this, collectable);
         }
     }
     #endregion

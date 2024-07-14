@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttributeHolder : MonoBehaviour
+public class Interactable : MonoBehaviour
 {
     #region Properties
     public Attribute Attribute => _attribute;
@@ -20,6 +20,8 @@ public class AttributeHolder : MonoBehaviour
     [Space]
 
     private Material _decorationMaterial;
+
+    protected CollectionManager _collectionManager;
     #endregion
 
     #region Unity Methods
@@ -30,16 +32,21 @@ public class AttributeHolder : MonoBehaviour
     #endregion
 
     #region Public Methods
+    public void Initialise(CollectionManager collectionManager)
+    {
+        _collectionManager = collectionManager;
+    }
     #endregion
 
     #region Protected Methods
     protected void InitialiseAppearance()
     {
-        _decorationMaterial = new Material(_materialPrefab);
+        _decorationMaterial = new Material(_materialPrefab)
+        {
+            color = _attribute.Color
+        };
 
-        _decorationMaterial.color = _attribute.Color;
-
-        foreach( MeshRenderer renderer in _decoratedRenderers)
+        foreach ( MeshRenderer renderer in _decoratedRenderers)
         {
             renderer.material = _decorationMaterial;
         }

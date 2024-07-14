@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Repository : AttributeHolder, IHoldCollectable
+public class Repository : Interactable, IHoldCollectable
 {
     #region Properties
     #endregion
@@ -33,7 +33,7 @@ public class Repository : AttributeHolder, IHoldCollectable
             {
                 if(CollectionManager.CanCollect(collectable, this))
                 {
-                    CollectionManager.CollectablePickedUp(collectable, this);
+                    _collectionManager.CollectablePickedUp?.Invoke(this, collectable);
                 }
             }
         }
@@ -41,6 +41,7 @@ public class Repository : AttributeHolder, IHoldCollectable
     #endregion
 
     #region Public Methods
+
     public Attribute GetAttribute()
     {
         return _attribute;

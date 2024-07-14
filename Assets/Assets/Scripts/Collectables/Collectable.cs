@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Collectable : AttributeHolder
+public class Collectable : Interactable
 {
     #region Constants
     private float PickUpCooldownDuration = 2f;
