@@ -4,13 +4,23 @@ using UnityEngine;
 
 public class Collectable : MonoBehaviour
 {
+    #region Constants
+    private float PickUpCooldownDuration = 2f;
+    #endregion
+
     #region Properties
+    public CollectableAttribute Attribute => _attribute;
+    public bool InPickUpBuffer => _pickUpBuffer > 0;
+    public IHoldCollectable CurrentHolder => _holder;
     #endregion
 
     #region Fields
+    [SerializeField] private CollectableAttribute _attribute;
+
     private IHoldCollectable _holder;
-    private bool _heldByRepository;
     private Transform _holderHoldingPosition;
+
+    private float _pickUpBuffer = 0f;
     #endregion
 
     #region Unity Methods
@@ -20,29 +30,29 @@ public class Collectable : MonoBehaviour
         {
             transform.position = _holderHoldingPosition.position;
         }
+
+        if(_pickUpBuffer > 0f)
+        {
+            _pickUpBuffer -= Time.deltaTime;
+        }
     }
     #endregion
 
     #region Public Methods
-    public void PlayerPickedUp(Player player)
+    public bool CanCollect(IHoldCollectable repository)
     {
-        if (_heldByRepository)
-        {
-            return;
-        }
-
-        GetPickedUp(player, true);
+        return _pickUpBuffer <= 0f;
     }
-   
-    public void RepositoryPickedUp(Repository repository)
-    {
-        //held by player
-        if (!_heldByRepository && _holder != null)
-        {
-            _holder.ReleaseCollectable(this);
-        }
 
-        GetPickedUp(repository, true);
+    public void GetPickedUp(IHoldCollectable holder)
+    {
+        _holder = holder;
+
+        _holderHoldingPosition = _holder.GetHoldingPosition();
+
+        _holder.PickUpCollectable(this);
+
+        _pickUpBuffer = PickUpCooldownDuration;
     }
     #endregion
 
@@ -50,15 +60,6 @@ public class Collectable : MonoBehaviour
     #endregion
 
     #region Private Methods
-    private void GetPickedUp(IHoldCollectable holder, bool isRepository)
-    {
-        _holder = holder;
-        _heldByRepository = isRepository;
-
-        _holderHoldingPosition = _holder.GetHoldingPosition();
-
-        _holder.PickUpCollectable(this);
-    }
     #endregion
 
     #region Event Callbacks

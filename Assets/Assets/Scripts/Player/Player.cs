@@ -6,6 +6,8 @@ public class Player : MonoBehaviour, IHoldCollectable
     #endregion
 
     #region Fields
+    [SerializeField] private RepositoryAttribute _attribute;
+
     [Header("Collectable")]
     [SerializeField] private Transform _aimTarget;
     [SerializeField] private float _pickUpLength = 5f;
@@ -36,6 +38,11 @@ public class Player : MonoBehaviour, IHoldCollectable
     {
         return _aimTarget;
     }
+
+    public RepositoryAttribute GetRepositoryAttribute()
+    {
+        return _attribute;
+    }
     #endregion
 
     #region Protected Methods
@@ -64,7 +71,12 @@ public class Player : MonoBehaviour, IHoldCollectable
 
     private void PickupCollectable(Collectable collectable)
     {
-        collectable.PlayerPickedUp(this);
+        Debug.Log($"Try pick up ? {CollectionManager.CanCollect(collectable, this)}");
+
+        if(CollectionManager.CanCollect(collectable, this))
+        {
+            CollectionManager.CollectablePickedUp(collectable, this);
+        }
     }
     #endregion
 

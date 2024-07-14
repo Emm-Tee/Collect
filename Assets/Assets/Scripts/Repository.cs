@@ -8,6 +8,10 @@ public class Repository : MonoBehaviour, IHoldCollectable
     #endregion
 
     #region Fields
+    [SerializeField] private RepositoryAttribute _attribute;
+
+    [Space]
+
     [SerializeField] private float _detectionRadius;
 
     [SerializeField] private Transform _collectableHoldingPoint;
@@ -31,7 +35,10 @@ public class Repository : MonoBehaviour, IHoldCollectable
         {
             if (_collectableColliders[0].gameObject.TryGetComponent<Collectable>(out Collectable collectable))
             {
-                collectable.RepositoryPickedUp(this);
+                if(CollectionManager.CanCollect(collectable, this))
+                {
+                    CollectionManager.CollectablePickedUp(collectable, this);
+                }
             }
         }
     }
@@ -51,6 +58,11 @@ public class Repository : MonoBehaviour, IHoldCollectable
     public Transform GetHoldingPosition()
     {
         return _collectableHoldingPoint;
+    }
+
+    public RepositoryAttribute GetRepositoryAttribute()
+    {
+        return _attribute;
     }
     #endregion
 

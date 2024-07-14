@@ -19,6 +19,7 @@ public interface IHoldCollectable
     public void ReleaseCollectable(Collectable collectable);
 
     public Transform GetHoldingPosition();
+    public RepositoryAttribute GetRepositoryAttribute();
     #endregion
 
     #region Protected Methods
