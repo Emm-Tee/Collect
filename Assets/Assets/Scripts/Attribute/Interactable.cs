@@ -15,7 +15,6 @@ public class Interactable : MonoBehaviour
 
     [Header("Appearance")]
     [SerializeField] private MeshRenderer[] _decoratedRenderers;
-    [SerializeField] private Material _materialPrefab;
 
     [Space]
 
@@ -36,12 +35,18 @@ public class Interactable : MonoBehaviour
     {
         _collectionManager = collectionManager;
     }
+
+    public void SetAttribute(Attribute attribute)
+    {
+        _attribute = attribute;
+        InitialiseAppearance();
+    }
     #endregion
 
     #region Protected Methods
     protected void InitialiseAppearance()
     {
-        _decorationMaterial = new Material(_materialPrefab)
+        _decorationMaterial = new Material(_attribute.Material)
         {
             color = _attribute.Color
         };

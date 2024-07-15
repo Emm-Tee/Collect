@@ -7,13 +7,13 @@ public class Player : MonoBehaviour, IHoldCollectable
     #endregion
 
     #region Fields
-    [SerializeField] private CollectionManager _collectionManager;
-
     [SerializeField] private Attribute _attribute;
 
     [Header("Collectable")]
     [SerializeField] private Transform _aimTarget;
     [SerializeField] private float _pickUpLength = 5f;
+
+    private CollectionManager _collectionManager;
 
     private RaycastHit _pickupHit;
     private Collectable _heldCollectable;
@@ -27,6 +27,11 @@ public class Player : MonoBehaviour, IHoldCollectable
     #endregion
 
     #region Public Methods
+    public void Initialise(CollectionManager collectionManager)
+    {
+        _collectionManager = collectionManager;
+    }
+
     public void PickUpCollectable(Collectable collectable)
     {
         _heldCollectable = collectable;

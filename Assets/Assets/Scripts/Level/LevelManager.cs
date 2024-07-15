@@ -8,31 +8,32 @@ public class LevelManager : MonoBehaviour
     #endregion
 
     #region Fields
-    [SerializeField] private CollectionManager _collectionManager;
+    [SerializeField] private LevelSet[] _levels;
 
-    [SerializeField] private Interactable[] _interactables;
+    private GameManager _gameManager;
     #endregion
 
     #region Unity Methods
-    private void Awake()
-    {
-        InitializeInteractables();
-    }
     #endregion
 
     #region Public Methods
+    public void Initialise(GameManager gameManager)
+    {
+        _gameManager = gameManager;
 
+        InitialiseLevels();
+    }
     #endregion
 
     #region Protected Methods
     #endregion
 
     #region Private Methods
-    private void InitializeInteractables()
+    private void InitialiseLevels()
     {
-        foreach(Interactable interactable in _interactables)
+        foreach(LevelSet level in _levels)
         {
-            interactable.Initialise(_collectionManager);
+            level.Initialise(_gameManager.CollecationManager);
         }
     }
     #endregion

@@ -9,7 +9,6 @@ public class CollectionManager : MonoBehaviour
     #endregion
 
     #region Fields
-
     [HideInInspector] public UnityEvent<IHoldCollectable, Collectable> CollectablePickedUp;
     #endregion
 
