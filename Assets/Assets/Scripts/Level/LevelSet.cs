@@ -5,6 +5,20 @@ using UnityEngine;
 public class LevelSet : MonoBehaviour
 {
     #region Properties
+    public bool LevelComplete
+    {
+        get
+        {
+            foreach (InteractablePair pair in _interactablePairings)
+            {
+                if (!pair.IsMatched)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
     #endregion
 
     #region Fields
@@ -27,6 +41,7 @@ public class LevelSet : MonoBehaviour
             interactable.Initialise(collectionManager);
         }
     }
+
     #endregion
 
     #region Protected Methods

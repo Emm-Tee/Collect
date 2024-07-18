@@ -5,15 +5,39 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     #region Properties
+    public bool CurrentLevelsCompleted
+    {
+        get
+        {
+            for (int i = 0; i <= _currentLevelIndex; i++)
+            {
+                if (!_levels[i].LevelComplete)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
     #endregion
 
     #region Fields
     [SerializeField] private LevelSet[] _levels;
 
     private GameManager _gameManager;
+    private int _currentLevelIndex;
     #endregion
 
     #region Unity Methods
+    private void Awake()
+    {
+        Events.LevelComplete += OnLevelComplete;
+    }
+
+    private void OnDestroy()
+    {
+        Events.LevelComplete -= OnLevelComplete;
+    }
     #endregion
 
     #region Public Methods
@@ -23,6 +47,8 @@ public class LevelManager : MonoBehaviour
 
         InitialiseLevels();
     }
+
+
     #endregion
 
     #region Protected Methods
@@ -35,6 +61,16 @@ public class LevelManager : MonoBehaviour
         {
             level.Initialise(_gameManager.CollecationManager);
         }
+    }
+
+    private void StartNewLevel()
+    {
+        //
+    }
+
+    private void OnLevelComplete()
+    {
+        _currentLevelIndex++;
     }
     #endregion
 

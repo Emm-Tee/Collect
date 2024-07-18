@@ -9,7 +9,7 @@ public class CollectionManager : MonoBehaviour
     #endregion
 
     #region Fields
-    [HideInInspector] public UnityEvent<IHoldCollectable, Collectable> CollectablePickedUp;
+    [SerializeField] private AttributeBehaviourManager _behaviourManager;
     #endregion
 
     #region Unity Methods
@@ -37,17 +37,19 @@ public class CollectionManager : MonoBehaviour
     #region Private Methods
     private void SubscribeToEvents()
     {
-        CollectablePickedUp.AddListener(OnCollectablePickedUp);
+        Events.AttemptAtPickUp += OnAttemptPickup;
+
+        Events.PickUpComplete += OnPickUpComplete;
     }
 
     private void UnsubscribeToEvents()
     {
-        CollectablePickedUp.RemoveAllListeners();
+        Events.AttemptAtPickUp -= OnAttemptPickup;
     }
     #endregion
 
     #region Event Callbacks
-    private void OnCollectablePickedUp(IHoldCollectable repository, Collectable collectable)
+    private void OnAttemptPickup(IHoldCollectable repository, Collectable collectable)
     {
         if (collectable.CurrentHolder != null)
         {
@@ -57,6 +59,14 @@ public class CollectionManager : MonoBehaviour
         repository.PickUpCollectable(collectable);
 
         collectable.GetPickedUp(repository);
+    }
+
+    private void OnPickUpComplete(IHoldCollectable repository, Collectable collectable)
+    {
+        if (repository.GetAttribute().Equals(collectable.Attribute.Type))
+        {
+            _behaviourManager.StartCompleteBehaviour(collectable.Attribute.Type);
+        }
     }
     #endregion
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "Att_", menuName = "Scriptable Objects/ Attribute")]
 public class Attribute : ScriptableObject
@@ -29,7 +30,15 @@ public class Attribute : ScriptableObject
     #region Fields
     [SerializeField] private AttributeTypes _type;
     [Space]
+    [SerializeField] private AttributeBehaviourManager _checkCompleteBehaviour;
+    [Space]
     [SerializeField] private Color _color = Color.white;
     [SerializeField] private Material _material;
+
     #endregion
+
+    public bool Equals(AttributeTypes other)
+    {
+        return _type == other;
+    }
 }

@@ -7,11 +7,13 @@ public class GameManager : MonoBehaviour
     #region Properties
     public CollectionManager CollecationManager => _collectionManager;
     public LevelManager LevelManager => _levelManager;
+    public Events Events => _events;
     #endregion
 
     #region Fields
     [SerializeField] private CollectionManager _collectionManager;
     [SerializeField] private LevelManager _levelManager;
+    [SerializeField] private Events _events;
 
     [SerializeField] private Player _player;
     #endregion

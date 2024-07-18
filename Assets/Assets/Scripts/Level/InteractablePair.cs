@@ -2,39 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//One collectable and matching repository
 public class InteractablePair : MonoBehaviour
 {
     #region Properties
+    public bool IsMatched => _repository.IsMatched;
     #endregion
 
     #region Fields
-    [SerializeField] Interactable[] _interactables;
-    [SerializeField] Attribute _attribute;
+    [SerializeField] private Repository _repository;
+    [SerializeField] private Collectable _collectable;
+    [SerializeField] private Attribute _attribute;
     #endregion
 
     #region Unity Methods
     private void OnDrawGizmos()
     {
-        if (_interactables.Length < 2)
-        {
-            return;
-        }
-
-        for (int i = 1; i < _interactables.Length; i++)
-        {
-            Debug.DrawLine(_interactables[i - 1].transform.position, _interactables[i].transform.position);
-        }
+        Debug.DrawLine(_repository.transform.position, _collectable.transform.position);
     }
     #endregion
 
     #region Public Methods
     public void InitialisePairing(CollectionManager collectionManager)
     {
-        foreach(Interactable interactable in _interactables)
-        {
-            interactable.SetAttribute(_attribute);
-            interactable.Initialise(collectionManager);
-        }
+        _repository.SetAttribute(_attribute);
+        _repository.Initialise(collectionManager);
+
+        _collectable.SetAttribute(_attribute);
+        _collectable.Initialise(collectionManager);
     }
     #endregion
 

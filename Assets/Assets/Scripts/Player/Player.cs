@@ -72,16 +72,16 @@ public class Player : MonoBehaviour, IHoldCollectable
 
             if (_pickupHit.collider.gameObject.TryGetComponent<Collectable>(out Collectable collectable))
             {
-                PickupCollectable(collectable);
+                AttemptPickup(collectable);
             }
         }
     }
 
-    private void PickupCollectable(Collectable collectable)
+    private void AttemptPickup(Collectable collectable)
     {
         if(CollectionManager.CanCollect(collectable, this))
         {
-            _collectionManager.CollectablePickedUp?.Invoke(this, collectable);
+            Events.AttemptAtPickUp?.Invoke(this, collectable);
         }
     }
     #endregion

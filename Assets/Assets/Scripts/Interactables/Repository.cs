@@ -5,6 +5,7 @@ using UnityEngine;
 public class Repository : Interactable, IHoldCollectable
 {
     #region Properties
+    public bool IsMatched => _heldCollectable != null && _heldCollectable.Attribute.Type == _attribute.Type;
     #endregion
 
     #region Fields
@@ -33,7 +34,7 @@ public class Repository : Interactable, IHoldCollectable
             {
                 if(CollectionManager.CanCollect(collectable, this))
                 {
-                    _collectionManager.CollectablePickedUp?.Invoke(this, collectable);
+                    Events.AttemptAtPickUp?.Invoke(this, collectable);
                 }
             }
         }
@@ -50,6 +51,11 @@ public class Repository : Interactable, IHoldCollectable
     public void PickUpCollectable(Collectable collectable)
     {
         _heldCollectable = collectable;
+
+        if(collectable.Attribute.Type == _attribute.Type)
+        {
+            Events.PickUpComplete?.Invoke(this, collectable);
+        }
     }
 
     public void ReleaseCollectable(Collectable collectable)

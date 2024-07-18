@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Att__EndLevel
   m_EditorClassIdentifier: 
   _type: 0
+  _checkCompleteBehaviour: {fileID: 0}
   _color: {r: 1, g: 1, b: 1, a: 1}
   _material: {fileID: 2100000, guid: e7ac097cad37dfc4ab782667bc812c2f, type: 2}

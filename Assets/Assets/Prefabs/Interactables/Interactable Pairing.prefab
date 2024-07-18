@@ -46,9 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a747afb1a345c07418de3af6abc14a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactables:
-  - {fileID: 9139878143512441813}
-  - {fileID: 8452519793059527128}
+  _repository: {fileID: 8452519793059527128}
+  _collectable: {fileID: 9139878143512441813}
   _attribute: {fileID: 11400000, guid: 471499f296c61394eaacaafdc5232747, type: 2}
 --- !u!1001 &4825901825282591668
 PrefabInstance:
