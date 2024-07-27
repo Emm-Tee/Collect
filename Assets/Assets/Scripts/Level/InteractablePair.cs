@@ -23,13 +23,12 @@ public class InteractablePair : MonoBehaviour
     #endregion
 
     #region Public Methods
-    public void InitialisePairing(CollectionManager collectionManager)
+    public void InitializePairing(GameManager gameManager)
     {
         _repository.SetAttribute(_attribute);
-        _repository.Initialise(collectionManager);
 
         _collectable.SetAttribute(_attribute);
-        _collectable.Initialise(collectionManager);
+        _collectable.InitialiseBehaviour(gameManager);
     }
     #endregion
 

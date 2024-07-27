@@ -25,12 +25,11 @@ public class Attribute : ScriptableObject
 
     public Color Color => _color;
     public Material Material => _material;
+
     #endregion
 
     #region Fields
     [SerializeField] private AttributeTypes _type;
-    [Space]
-    [SerializeField] private AttributeBehaviourManager _checkCompleteBehaviour;
     [Space]
     [SerializeField] private Color _color = Color.white;
     [SerializeField] private Material _material;

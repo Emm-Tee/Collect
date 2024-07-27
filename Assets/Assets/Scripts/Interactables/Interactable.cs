@@ -19,8 +19,6 @@ public class Interactable : MonoBehaviour
     [Space]
 
     private Material _decorationMaterial;
-
-    protected CollectionManager _collectionManager;
     #endregion
 
     #region Unity Methods
@@ -31,11 +29,6 @@ public class Interactable : MonoBehaviour
     #endregion
 
     #region Public Methods
-    public void Initialise(CollectionManager collectionManager)
-    {
-        _collectionManager = collectionManager;
-    }
-
     public void SetAttribute(Attribute attribute)
     {
         _attribute = attribute;

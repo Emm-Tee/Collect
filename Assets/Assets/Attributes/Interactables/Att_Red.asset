@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177005abc288e284fb03fa880fc9a217, type: 3}
   m_Name: Att_Red
   m_EditorClassIdentifier: 
-  _type: 0
+  _type: 1
   _color: {r: 1, g: 0, b: 0, a: 1}
   _material: {fileID: 2100000, guid: 627ad00a5abd17b4c999152a52acb07a, type: 2}

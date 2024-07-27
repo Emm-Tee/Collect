@@ -14,6 +14,7 @@ public class Collectable : Interactable
     #endregion
 
     #region Fields
+    private AttributeBehaviour _behaviour;
 
     private IHoldCollectable _holder;
     private Transform _holderHoldingPosition;
@@ -37,6 +38,12 @@ public class Collectable : Interactable
     #endregion
 
     #region Public Methods
+    public void InitialiseBehaviour(GameManager gameManager)
+    {
+        _behaviour = CreateBehaviour();
+        _behaviour.Initialize(this, gameManager);
+    }
+
     public bool CanCollect(IHoldCollectable repository)
     {
         return _pickUpBuffer <= 0f;
@@ -58,6 +65,16 @@ public class Collectable : Interactable
     #endregion
 
     #region Private Methods
+    private AttributeBehaviour CreateBehaviour()
+    {
+        switch(_attribute.Type)
+        {
+            case Attribute.AttributeTypes.Complete:
+                return gameObject.AddComponent<AB_Complete>();
+            default:
+                return gameObject.AddComponent<AB_Base>();
+        }
+    }
     #endregion
 
     #region Event Callbacks
