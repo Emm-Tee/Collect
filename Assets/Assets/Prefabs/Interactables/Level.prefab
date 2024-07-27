@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3681237042959253187}
   - component: {fileID: 3212770563930607525}
   m_Layer: 0
-  m_Name: Level 1
+  m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,6 +48,75 @@ MonoBehaviour:
   _interactablePairings:
   - {fileID: 2799607180023271084}
   _soloInteractables: []
+  _activeHeight: 0
+  _inactiveHeight: -3
+  _animateDuration: 1
+  _animateOutCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.5710889
+      outSlope: 0.5710889
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.30112964
+      value: 1.1719718
+      inSlope: -1.7346252
+      outSlope: -1.7346252
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.107193895
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.6769516
+      outSlope: -1.6769516
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _animationInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.77203375
+      value: 1.292908
+      inSlope: 1.1409798
+      outSlope: 1.1409798
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &3095845690415116959
 PrefabInstance:
   m_ObjectHideFlags: 0

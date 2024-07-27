@@ -47,8 +47,6 @@ public class LevelManager : MonoBehaviour
 
         InitialiseLevels();
     }
-
-
     #endregion
 
     #region Protected Methods
@@ -57,21 +55,28 @@ public class LevelManager : MonoBehaviour
     #region Private Methods
     private void InitialiseLevels()
     {
-        foreach(LevelSet level in _levels)
+        for (int i = 0; i < _levels.Length; i++)
         {
-            level.Initialise(_gameManager.CollecationManager);
+            _levels[i].Initialize(_gameManager);
         }
-    }
 
-    private void StartNewLevel()
-    {
-        //
+        _levels[0].ToggleActiveLevel(true);
     }
 
     private void OnLevelComplete()
     {
+        _levels[_currentLevelIndex].ToggleActiveLevel(false);
+
         _currentLevelIndex++;
+
+        if(_currentLevelIndex >= _levels.Length)
+        {
+            return;
+        }
+
+        _levels[_currentLevelIndex].ToggleActiveLevel(true);
     }
+
     #endregion
 
     #region Event Callbacks
