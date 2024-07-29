@@ -1,0 +1,16 @@
+{
+    "name": "Collect.Core.Gameplay",
+    "rootNamespace": "",
+    "references": [
+        "GUID:019f23c901f133745b63229bdd41939c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

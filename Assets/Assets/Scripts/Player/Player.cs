@@ -1,91 +1,95 @@
-using System;
+using Collect.Core.Gameplay;
 using UnityEngine;
+using Collect.Core;
 
-public class Player : MonoBehaviour, IHoldCollectable
+namespace Collect.Core.Player
 {
-    #region Properties
-    #endregion
-
-    #region Fields
-    [SerializeField] private Attribute _attribute;
-
-    [Header("Collectable")]
-    [SerializeField] private Transform _aimTarget;
-    [SerializeField] private float _pickUpLength = 5f;
-
-    private CollectionManager _collectionManager;
-
-    private RaycastHit _pickupHit;
-    private Collectable _heldCollectable;
-    #endregion
-
-    #region Unity Methods
-    private void Update()
+    public class Player : MonoBehaviour, IHoldCollectable
     {
-        TestPickup();
-    }
-    #endregion
+        #region Properties
+        #endregion
 
-    #region Public Methods
-    public void Initialise(CollectionManager collectionManager)
-    {
-        _collectionManager = collectionManager;
-    }
+        #region Fields
+        [SerializeField] private Attribute _attribute;
 
-    public void PickUpCollectable(Collectable collectable)
-    {
-        _heldCollectable = collectable;
-    }
+        [Header("Collectable")]
+        [SerializeField] private Transform _aimTarget;
+        [SerializeField] private float _pickUpLength = 5f;
 
-    public void ReleaseCollectable(Collectable collectable)
-    {
-        _heldCollectable = null;
-    }
+        private CollectionManager _collectionManager;
 
-    public Transform GetHoldingPosition()
-    {
-        return _aimTarget;
-    }
+        private RaycastHit _pickupHit;
+        private Collectable _heldCollectable;
+        #endregion
 
-    public Attribute GetAttribute()
-    {
-        return _attribute;
-    }
-    #endregion
-
-    #region Protected Methods
-    #endregion
-
-    #region Private Methods
-    private void TestPickup()
-    {
-        if (_heldCollectable)
+        #region Unity Methods
+        private void Update()
         {
-            return;
+            TestPickup();
+        }
+        #endregion
+
+        #region Public Methods
+        public void Initialise(CollectionManager collectionManager)
+        {
+            _collectionManager = collectionManager;
         }
 
-        Vector3 rayToCamera = Vector3.Normalize(Camera.main.transform.rotation * Vector3.back) * _pickUpLength;
-
-        if(Physics.Raycast(_aimTarget.position, rayToCamera, out _pickupHit, _pickUpLength, LayerMasks.Collectable))
+        public void PickUpCollectable(Collectable collectable)
         {
-            Debug.DrawRay(_aimTarget.position, rayToCamera, Color.magenta);
+            _heldCollectable = collectable;
+        }
 
-            if (_pickupHit.collider.gameObject.TryGetComponent<Collectable>(out Collectable collectable))
+        public void ReleaseCollectable(Collectable collectable)
+        {
+            _heldCollectable = null;
+        }
+
+        public Transform GetHoldingPosition()
+        {
+            return _aimTarget;
+        }
+
+        public Attribute GetAttribute()
+        {
+            return _attribute;
+        }
+        #endregion
+
+        #region Protected Methods
+        #endregion
+
+        #region Private Methods
+        private void TestPickup()
+        {
+            if (_heldCollectable)
             {
-                AttemptPickup(collectable);
+                return;
+            }
+
+            Vector3 rayToCamera = Vector3.Normalize(Camera.main.transform.rotation * Vector3.back) * _pickUpLength;
+
+            if (Physics.Raycast(_aimTarget.position, rayToCamera, out _pickupHit, _pickUpLength, LayerMasks.Collectable))
+            {
+                Debug.DrawRay(_aimTarget.position, rayToCamera, Color.magenta);
+
+                if (_pickupHit.collider.gameObject.TryGetComponent<Collectable>(out Collectable collectable))
+                {
+                    AttemptPickup(collectable);
+                }
             }
         }
-    }
 
-    private void AttemptPickup(Collectable collectable)
-    {
-        if(CollectionManager.CanCollect(collectable, this))
+        private void AttemptPickup(Collectable collectable)
         {
-            Events.AttemptAtPickUp?.Invoke(this, collectable);
+            if (CollectionManager.CanCollect(collectable, this))
+            {
+                CollectableEvents.AttemptAtPickUp?.Invoke(this, collectable);
+            }
         }
-    }
-    #endregion
+        #endregion
 
-    #region Event Callbacks
-    #endregion
+        #region Event Callbacks
+        #endregion
+    }
 }
