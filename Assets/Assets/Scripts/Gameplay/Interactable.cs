@@ -17,6 +17,11 @@ namespace Collect.Core.Gameplay
 
         [Header("Appearance")]
         [SerializeField] private MeshRenderer[] _decoratedRenderers;
+        [SerializeField] private MeshRenderer[] _postCollectionDecoratedRenderers;
+
+        [Space]
+
+        [SerializeField] private Material _defaultMaterial;
 
         [Space]
 
@@ -24,31 +29,39 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Unity Methods
-        private void Awake()
-        {
-            InitialiseAppearance();
-        }
         #endregion
 
         #region Public Methods
         public void SetAttribute(Attribute attribute)
         {
             _attribute = attribute;
-            InitialiseAppearance();
-        }
-        #endregion
 
-        #region Protected Methods
-        protected void InitialiseAppearance()
-        {
             _decorationMaterial = new Material(_attribute.Material)
             {
                 color = _attribute.Color
             };
 
-            foreach (MeshRenderer renderer in _decoratedRenderers)
+            UpdateAppearance(false);
+        }
+        #endregion
+
+        #region Protected Methods
+        protected void UpdateAppearance(bool collected)
+        {
+
+            Material mat = collected ? _decorationMaterial : _defaultMaterial;
+
+            foreach (MeshRenderer renderer in _postCollectionDecoratedRenderers)
             {
-                renderer.material = _decorationMaterial;
+                renderer.material = mat;
+            }
+
+            if(!collected)
+            {
+                foreach (MeshRenderer renderer in _decoratedRenderers)
+                {
+                    renderer.material = _decorationMaterial;
+                }
             }
         }
         #endregion

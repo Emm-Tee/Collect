@@ -23,7 +23,6 @@ namespace Collect.Core.Gameplay
         {
             if (_gameManager.LevelManager.CurrentLevelsCompleted)
             {
-                Debug.Log("FIN");
                 CollectableEvents.LevelComplete?.Invoke();
             }
         }

@@ -18,6 +18,7 @@ namespace Collect.Core.Gameplay
         private Collectable _heldCollectable;
 
         private Collider[] _collectableColliders;
+
         #endregion
 
         #region Unity Methods
@@ -56,7 +57,10 @@ namespace Collect.Core.Gameplay
 
             if (collectable.Attribute.Type == _attribute.Type)
             {
+                //Trigger success event
                 CollectableEvents.PickUpComplete?.Invoke(this, collectable);
+
+                UpdateAppearance(true);
             }
         }
 
