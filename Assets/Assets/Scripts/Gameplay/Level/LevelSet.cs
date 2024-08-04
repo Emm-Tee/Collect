@@ -25,7 +25,6 @@ namespace Collect.Core.Gameplay
 
         #region Fields
         [SerializeField] private InteractablePair[] _interactablePairings;
-        [SerializeField] private Interactable[] _soloInteractables;
 
         [Header("Animations")]
         [SerializeField] private float _activeHeight;
@@ -57,14 +56,23 @@ namespace Collect.Core.Gameplay
             SetLevelPositionHeight(_inactiveHeight);
         }
 
-        public void ToggleActiveLevel(bool animIn)
+        public void DeactivateLevel()
         {
-            _animateTime = _animateDuration;
-            _animatingIn = animIn;
+            ToggleActiveLevel(false);
 
-            if (animIn)
+            foreach(InteractablePair pair in _interactablePairings)
             {
-                SetActive(true);
+                pair.Deactivate();
+            }
+        }
+
+        public void ActivateLevel()
+        {
+            ToggleActiveLevel(true);
+
+            foreach (InteractablePair pair in _interactablePairings)
+            {
+                pair.Activate();
             }
         }
         #endregion
@@ -73,7 +81,18 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Private Methods
-        private void SetActive(bool Active)
+        private void ToggleActiveLevel(bool animIn)
+        {
+            _animateTime = _animateDuration;
+            _animatingIn = animIn;
+
+            if (animIn)
+            {
+                SetVisualsActive(true);
+            }
+        }
+
+        private void SetVisualsActive(bool Active)
         {
             foreach (InteractablePair pair in _interactablePairings)
             {
@@ -97,7 +116,7 @@ namespace Collect.Core.Gameplay
 
                     if (!_animatingIn)
                     {
-                        SetActive(false);
+                        SetVisualsActive(false);
                     }
                 }
                 else

@@ -65,7 +65,7 @@ namespace Collect.Core.Gameplay
             _heldCollectable = null;
         }
 
-        public Transform GetHoldingPosition()
+        public Transform GetHoldingTransform()
         {
             return _collectableHoldingPoint;
         }

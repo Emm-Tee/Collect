@@ -15,23 +15,32 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Unity Methods
-        #endregion
-
-        #region Public Methods
-        public void Initialize(Collectable collectable, GameManager gameManager)
-        {
-            _collectable = collectable;
-            _gameManager = gameManager;
-            SubscribeToEvents();
-        }
-
         private void OnDestroy()
         {
             UnsubscribeToEvents();
         }
         #endregion
 
+        #region Public Methods
+        public virtual void Initialize(Collectable collectable, GameManager gameManager)
+        {
+            _collectable = collectable;
+            _gameManager = gameManager;
+        }
+
+        public virtual void Activate()
+        {
+            SubscribeToEvents();
+        }
+
+        public virtual void Deactivate()
+        {
+            UnsubscribeToEvents();
+        }
+        #endregion
+
         #region Protected Methods
+
         protected virtual void OnPickUpAttempt(IHoldCollectable holder, Collectable collectable)
         {
             //default is to not act if we're not the one
@@ -40,6 +49,7 @@ namespace Collect.Core.Gameplay
                 return;
             }
         }
+
         protected virtual void OnPickUpComplete(IHoldCollectable holder, Collectable collectable)
         {
             //default is to not act if we're not the one

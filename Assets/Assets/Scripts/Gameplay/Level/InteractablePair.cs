@@ -32,6 +32,16 @@ namespace Collect.Core.Gameplay
             _collectable.SetAttribute(_attribute);
             _collectable.InitialiseBehaviour(gameManager);
         }
+
+        public void Activate()
+        {
+            _collectable?.Activate();
+        }
+
+        public void Deactivate()
+        {
+            _collectable?.Deactivate();
+        }
         #endregion
 
         #region Protected Methods

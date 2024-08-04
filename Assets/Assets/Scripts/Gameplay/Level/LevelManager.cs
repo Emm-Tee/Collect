@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Collect.Core.Gameplay
@@ -34,6 +32,11 @@ namespace Collect.Core.Gameplay
         private void Awake()
         {
             CollectableEvents.LevelComplete += OnLevelComplete;
+
+            foreach (LevelSet level in _levels)
+            {
+                level.gameObject.SetActive(true);
+            }
         }
 
         private void OnDestroy()
@@ -62,12 +65,12 @@ namespace Collect.Core.Gameplay
                 _levels[i].Initialize(_gameManager);
             }
 
-            _levels[0].ToggleActiveLevel(true);
+            _levels[0].ActivateLevel();
         }
 
         private void OnLevelComplete()
         {
-            _levels[_currentLevelIndex].ToggleActiveLevel(false);
+            _levels[_currentLevelIndex].DeactivateLevel();
 
             _currentLevelIndex++;
 
@@ -76,7 +79,7 @@ namespace Collect.Core.Gameplay
                 return;
             }
 
-            _levels[_currentLevelIndex].ToggleActiveLevel(true);
+            _levels[_currentLevelIndex].ActivateLevel();
         }
 
         #endregion

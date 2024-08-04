@@ -45,7 +45,7 @@ namespace Collect.Core.Player
             _heldCollectable = null;
         }
 
-        public Transform GetHoldingPosition()
+        public Transform GetHoldingTransform()
         {
             return _aimTarget;
         }

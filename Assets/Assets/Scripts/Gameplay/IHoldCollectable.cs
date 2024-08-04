@@ -14,7 +14,7 @@ namespace Collect.Core.Gameplay
 
         public void ReleaseCollectable(Collectable collectable);
 
-        public Transform GetHoldingPosition();
+        public Transform GetHoldingTransform();
         public Attribute GetAttribute();
         #endregion
 

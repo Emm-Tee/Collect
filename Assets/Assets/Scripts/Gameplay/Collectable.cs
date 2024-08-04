@@ -46,6 +46,16 @@ namespace Collect.Core.Gameplay
             _behaviour.Initialize(this, gameManager);
         }
 
+        public void Activate()
+        {
+            _behaviour?.Activate();
+        }
+
+        public void Deactivate()
+        {
+            _behaviour?.Deactivate();
+        }
+
         public bool CanCollect(IHoldCollectable repository)
         {
             return _pickUpBuffer <= 0f;
@@ -55,11 +65,11 @@ namespace Collect.Core.Gameplay
         {
             _holder = holder;
 
-            _holderHoldingPosition = _holder.GetHoldingPosition();
-
-            _holder.PickUpCollectable(this);
+            _holderHoldingPosition = _holder.GetHoldingTransform();
 
             _pickUpBuffer = PickUpCooldownDuration;
+
+            _holder.PickUpCollectable(this);
         }
         #endregion
 
