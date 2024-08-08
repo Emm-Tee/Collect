@@ -27,10 +27,9 @@ namespace Collect.Core.Gameplay
         #region Public Methods
         public void InitializePairing(GameManager gameManager)
         {
-            _repository.SetAttribute(_attribute);
+            _repository.Initialise(_attribute);
 
-            _collectable.SetAttribute(_attribute);
-            _collectable.InitialiseBehaviour(gameManager);
+            _collectable.Initialise(_attribute, gameManager);
         }
 
         public void Activate()

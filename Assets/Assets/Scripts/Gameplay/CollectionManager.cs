@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Collect.Core.Gameplay
 {
@@ -39,6 +36,7 @@ namespace Collect.Core.Gameplay
         private void SubscribeToEvents()
         {
             CollectableEvents.AttemptAtPickUp += OnAttemptPickup;
+            CollectableEvents.CollectableDropped += OnCollectableDropped;
         }
 
         private void UnsubscribeToEvents()
@@ -48,14 +46,21 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Event Callbacks
-        private void OnAttemptPickup(IHoldCollectable repository, Collectable collectable)
+        private void OnAttemptPickup(IHoldCollectable holder, Collectable collectable)
         {
             if (collectable.CurrentHolder != null)
             {
                 collectable.CurrentHolder.ReleaseCollectable(collectable);
             }
 
-            collectable.GetPickedUp(repository);
+            collectable.GetPickedUp(holder);
+            holder.PickUpCollectable(collectable);
+        }
+
+        private void OnCollectableDropped(IHoldCollectable holder, Collectable collectable)
+        {
+            collectable.BeDropped();
+            holder.ReleaseCollectable(collectable);
         }
         #endregion
     }

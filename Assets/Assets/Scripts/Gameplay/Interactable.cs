@@ -32,7 +32,7 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Public Methods
-        public void SetAttribute(Attribute attribute)
+        public virtual void Initialise(Attribute attribute)
         {
             _attribute = attribute;
 

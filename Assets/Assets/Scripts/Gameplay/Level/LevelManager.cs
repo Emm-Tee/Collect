@@ -65,7 +65,7 @@ namespace Collect.Core.Gameplay
                 _levels[i].Initialize(_gameManager);
             }
 
-            _levels[0].ActivateLevel();
+            _levels[0].BeginLevelReveal();
         }
 
         private void OnLevelComplete()
@@ -79,7 +79,7 @@ namespace Collect.Core.Gameplay
                 return;
             }
 
-            _levels[_currentLevelIndex].ActivateLevel();
+            _levels[_currentLevelIndex].BeginLevelReveal();
         }
 
         #endregion

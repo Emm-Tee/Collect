@@ -58,7 +58,7 @@ namespace Collect.Core.Gameplay
 
         public void DeactivateLevel()
         {
-            ToggleActiveLevel(false);
+            ToggleRevealLevel(false);
 
             foreach(InteractablePair pair in _interactablePairings)
             {
@@ -68,12 +68,15 @@ namespace Collect.Core.Gameplay
 
         public void ActivateLevel()
         {
-            ToggleActiveLevel(true);
-
             foreach (InteractablePair pair in _interactablePairings)
             {
                 pair.Activate();
             }
+        }
+
+        public void BeginLevelReveal()
+        {
+            ToggleRevealLevel(true);
         }
         #endregion
 
@@ -81,7 +84,7 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Private Methods
-        private void ToggleActiveLevel(bool animIn)
+        private void ToggleRevealLevel(bool animIn)
         {
             _animateTime = _animateDuration;
             _animatingIn = animIn;
@@ -117,6 +120,10 @@ namespace Collect.Core.Gameplay
                     if (!_animatingIn)
                     {
                         SetVisualsActive(false);
+                    }
+                    else
+                    {
+                        ActivateLevel();
                     }
                 }
                 else

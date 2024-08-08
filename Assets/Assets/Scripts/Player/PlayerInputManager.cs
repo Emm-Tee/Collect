@@ -63,16 +63,19 @@ namespace Collect.Core.Player
                 _camTarget.localPosition = localPos;
             }
 
+            Vector3 movement = Physics.gravity;
+
             if (_input.IsMoving)
             {
-                Vector3 movement = _input.Movement;
-                movement *= Time.deltaTime * _moveSpeed;
-
-                //camera relative
-                movement = transform.rotation * movement;
-
-                _characterController.Move(movement);
+                movement = _input.Movement;
             }
+
+            movement *= Time.deltaTime * _moveSpeed;
+
+            //camera relative
+            movement = transform.rotation * movement;
+
+            _characterController.Move(movement);
         }
 
         private void UpdateMoveInput(Vector2 input)
