@@ -130,8 +130,8 @@ GameObject:
   - component: {fileID: 3196308680486150201}
   - component: {fileID: 379380086532498956}
   - component: {fileID: 5477870001669055023}
-  m_Layer: 0
-  m_Name: Visual
+  m_Layer: 9
+  m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

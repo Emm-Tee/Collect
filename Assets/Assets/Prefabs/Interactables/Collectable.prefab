@@ -132,6 +132,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _dropDistance: 2
+  _collisionDetectionRadius: 0.95
 --- !u!135 &3327037181866135067
 SphereCollider:
   m_ObjectHideFlags: 0

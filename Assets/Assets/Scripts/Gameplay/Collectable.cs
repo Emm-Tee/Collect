@@ -23,11 +23,12 @@ namespace Collect.Core.Gameplay
 
         private float _pickUpBuffer = 0f;
         private Vector3 _goalPosition;
+        private Collider[] _hits;
 
         private bool _inStasis = true;
 
         [SerializeField] private Rigidbody _rigidbody;
-        [SerializeField] private Collider _collider;
+        [SerializeField] private SphereCollider _collider;
 
         [Space]
 
@@ -35,6 +36,7 @@ namespace Collect.Core.Gameplay
         [SerializeField] private AnimationCurve _speedModifierCurve;
 
         [SerializeField] private float _dropDistance = 1f;
+        [SerializeField] private float _collisionDetectionRadius;
         #endregion
 
         #region Unity Methods
@@ -59,20 +61,36 @@ namespace Collect.Core.Gameplay
             {
                 _goalPosition = _holderHoldingPosition.position;
 
+                Vector3 targetPos = _goalPosition;
+
                 Vector3 position = transform.position;
 
-                Vector3 direction = _goalPosition - position;
+                Vector3 direction = targetPos - position;
 
                 if (direction.sqrMagnitude > _dropDistance * _dropDistance)
                 {
                     CollectableEvents.CollectableDropped?.Invoke(_holder, this);
                 }
 
+                //speed based on how far away goal is
                 float maxSpeedDistance = _dropDistance * .9f;
                 float speedPercent = Mathf.InverseLerp(0, maxSpeedDistance * maxSpeedDistance, direction.sqrMagnitude);
-                float speed = _speedModifierCurve.Evaluate(speedPercent);
+                float speed = _speedModifierCurve.Evaluate(speedPercent) * _maxMoveSpeed;
 
-                _rigidbody.MovePosition(Vector3.MoveTowards(position, _goalPosition, speed));
+                //collision detection, don't move
+                _hits = Physics.OverlapSphere(position, _collider.radius * _collisionDetectionRadius, LayerMasks.Environment, QueryTriggerInteraction.Collide);
+                for (int i = 0; i < _hits.Length; i++)
+                {
+                    if (_hits[i] == this)
+                    {
+                        Debug.Log($"hit self");
+                        continue;
+                    }
+                    targetPos = position;
+                    break;
+                }
+
+                _rigidbody.MovePosition(Vector3.MoveTowards(position, targetPos, speed));
             }
         }
         #endregion
