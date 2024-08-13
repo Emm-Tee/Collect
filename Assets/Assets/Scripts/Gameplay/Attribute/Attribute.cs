@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Collect.Core.Gameplay;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -22,14 +23,15 @@ public class Attribute : ScriptableObject
 
     #region Properties
     public AttributeTypes Type => _type;
+    public IHoldCollectable.HoldingType HoldingType => _holdingType;
 
     public Color Color => _color;
     public Material Material => _material;
-
     #endregion
 
     #region Fields
     [SerializeField] private AttributeTypes _type;
+    [SerializeField] private IHoldCollectable.HoldingType _holdingType;
     [Space]
     [SerializeField] private Color _color = Color.white;
     [SerializeField] private Material _material;

@@ -19,24 +19,29 @@ namespace Collect.Core.Gameplay
         private AttributeBehaviour _behaviour;
 
         private IHoldCollectable _holder;
+        private IHoldCollectable.HoldingType _holdingType;
         private Transform _holderHoldingPosition;
 
-        private float _pickUpBuffer = 0f;
         private Vector3 _goalPosition;
-        private Collider[] _hits;
+        private Vector3 _velocity;
 
+        private float _pickUpBuffer = 0f;
         private bool _inStasis = true;
+        private float _timeOutOfDropDistance = 0f;
 
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private SphereCollider _collider;
 
         [Space]
 
-        [SerializeField] private float _maxMoveSpeed = 1f;
-        [SerializeField] private AnimationCurve _speedModifierCurve;
+        [SerializeField] private float _speed = 1f;
+        [SerializeField] private float _moveTime = 1f;
 
         [SerializeField] private float _dropDistance = 1f;
+        [SerializeField] private float _dropTime = 2f;
         [SerializeField] private float _collisionDetectionRadius;
+
+
         #endregion
 
         #region Unity Methods
@@ -59,38 +64,18 @@ namespace Collect.Core.Gameplay
 
             if (_holderHoldingPosition != null)
             {
-                _goalPosition = _holderHoldingPosition.position;
-
-                Vector3 targetPos = _goalPosition;
-
-                Vector3 position = transform.position;
-
-                Vector3 direction = targetPos - position;
-
-                if (direction.sqrMagnitude > _dropDistance * _dropDistance)
+                switch (_holdingType)
                 {
-                    CollectableEvents.CollectableDropped?.Invoke(_holder, this);
+                    case IHoldCollectable.HoldingType.Hard:
+                        MoveHolderHard();
+                        break;
+                    case IHoldCollectable.HoldingType.Soft:
+                        MoveHolderSoft();
+                        break;
+                    case IHoldCollectable.HoldingType.Follow:
+                        MoveHolderFollow();
+                        break;
                 }
-
-                //speed based on how far away goal is
-                float maxSpeedDistance = _dropDistance * .9f;
-                float speedPercent = Mathf.InverseLerp(0, maxSpeedDistance * maxSpeedDistance, direction.sqrMagnitude);
-                float speed = _speedModifierCurve.Evaluate(speedPercent) * _maxMoveSpeed;
-
-                //collision detection, don't move
-                _hits = Physics.OverlapSphere(position, _collider.radius * _collisionDetectionRadius, LayerMasks.Environment, QueryTriggerInteraction.Collide);
-                for (int i = 0; i < _hits.Length; i++)
-                {
-                    if (_hits[i] == this)
-                    {
-                        Debug.Log($"hit self");
-                        continue;
-                    }
-                    targetPos = position;
-                    break;
-                }
-
-                _rigidbody.MovePosition(Vector3.MoveTowards(position, targetPos, speed));
             }
         }
         #endregion
@@ -132,11 +117,12 @@ namespace Collect.Core.Gameplay
             _holder = holder;
 
             _holderHoldingPosition = _holder.GetHoldingTransform();
+            _holdingType = _holder.GetHoldingType();
 
             _pickUpBuffer = PickUpCooldownDuration;
 
             //becomes kinematic after being picked up
-            ToggleHeldKinematic(true);
+            SetRigidbodySettings(true);
         }
 
         public void BeDropped()
@@ -145,7 +131,7 @@ namespace Collect.Core.Gameplay
             _holderHoldingPosition = null;
             _goalPosition = Vector3.zero;
 
-            ToggleHeldKinematic(false);
+            SetRigidbodySettings(false);
         }
         #endregion
 
@@ -172,11 +158,65 @@ namespace Collect.Core.Gameplay
             ToggleCollider(true);
         }
 
-        private void ToggleHeldKinematic(bool held)
+        private void SetRigidbodySettings(bool held)
         {
+            if(held && !_rigidbody.isKinematic)
+            {
+                _rigidbody.velocity = Vector3.zero;
+                _rigidbody.angularVelocity = Vector3.zero;
+            }
+
             _rigidbody.useGravity = !held;
-            _rigidbody.isKinematic = false;
+            _rigidbody.isKinematic = held && _holdingType == IHoldCollectable.HoldingType.Hard;
             _inStasis = false;
+        }
+
+        private void MoveHolderHard()
+        {
+            transform.position = _holderHoldingPosition.position;
+        }
+
+        private void MoveHolderSoft()
+        {
+            Debug.LogWarning($"Soft hold not implemented");
+        }
+
+        private void MoveHolderFollow()
+        {
+            _goalPosition = _holderHoldingPosition.position;
+
+            Vector3 position = transform.position;
+
+            Vector3 direction = _goalPosition - position;
+
+            //Test if we've been out of drop distance for long enough to enact drop
+            float sqrDistance = direction.sqrMagnitude;
+            if( sqrDistance > _dropDistance)
+            {
+                _timeOutOfDropDistance += Time.deltaTime;
+                if(_timeOutOfDropDistance > _dropTime)
+                {
+                    CollectableEvents.CollectableDropped?.Invoke(_holder, this);
+                    _timeOutOfDropDistance = 0;
+                    return;
+                }
+                CollectableEvents.CollectableDropped?.Invoke(_holder, this);
+                return;
+            }
+            else
+            {
+                _timeOutOfDropDistance = 0;
+            }
+
+            //don't move if we have immediate blockages
+            if (Physics.Raycast(position, direction, _collider.radius * 1.1f, layerMask: LayerMasks.Environment))
+            {
+                return;
+            }
+
+            Vector3 smooth = Vector3.SmoothDamp(position, _goalPosition, ref _velocity, _moveTime, _speed);
+
+            _rigidbody.MovePosition(smooth);
         }
         #endregion
 

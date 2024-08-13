@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Att_Player
   m_EditorClassIdentifier: 
   _type: 0
+  _holdingType: 2
   _color: {r: 1, g: 1, b: 1, a: 1}
+  _material: {fileID: 0}

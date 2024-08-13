@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Collect.Core.Gameplay.IHoldCollectable;
 
 namespace Collect.Core.Gameplay
 {
@@ -14,6 +15,8 @@ namespace Collect.Core.Gameplay
         [SerializeField] private float _detectionRadius;
 
         [SerializeField] private Transform _collectableHoldingPoint;
+
+        private HoldingType _holdingType;
 
         private Collectable _heldCollectable;
 
@@ -29,7 +32,11 @@ namespace Collect.Core.Gameplay
                 return;
             }
 
-            _collectableColliders = Physics.OverlapSphere(transform.position, _detectionRadius, LayerMasks.Collectable);
+            Debug.DrawRay(_collectableHoldingPoint.position, _detectionRadius * Vector3.up);
+            Debug.DrawRay(_collectableHoldingPoint.position, _detectionRadius * Vector3.left);
+            Debug.DrawRay(_collectableHoldingPoint.position, _detectionRadius * Vector3.right);
+            Debug.DrawRay(_collectableHoldingPoint.position, _detectionRadius * Vector3.down);
+            _collectableColliders = Physics.OverlapSphere(_collectableHoldingPoint.position, _detectionRadius, LayerMasks.Collectable);
 
             if (_collectableColliders.Length > 0)
             {
@@ -49,6 +56,13 @@ namespace Collect.Core.Gameplay
         public Attribute GetAttribute()
         {
             return _attribute;
+        }
+
+        public override void Initialise(Attribute attribute)
+        {
+            base.Initialise(attribute);
+
+            _holdingType = _attribute.HoldingType;
         }
 
         public void PickUpCollectable(Collectable collectable)
@@ -72,6 +86,11 @@ namespace Collect.Core.Gameplay
         public Transform GetHoldingTransform()
         {
             return _collectableHoldingPoint;
+        }
+
+        public HoldingType GetHoldingType()
+        {
+            return _holdingType;
         }
         #endregion
 

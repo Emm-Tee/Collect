@@ -106,33 +106,12 @@ MonoBehaviour:
   _defaultMaterial: {fileID: 2100000, guid: 1135175e6eb6e164ea7c250ca0b27910, type: 2}
   _rigidbody: {fileID: 8920322589533742299}
   _collider: {fileID: 3327037181866135067}
-  _maxMoveSpeed: 25
-  _speedModifierCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.38449097
-      inSlope: 1.8502233
-      outSlope: 1.8502233
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.07626393
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0.08876338
-      outSlope: 0.08876338
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.13538992
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  _speed: 80
+  _moveTime: 0.05
   _dropDistance: 2
+  _dropTime: 1
   _collisionDetectionRadius: 0.95
+  _collisionCheckRayLength: 10
 --- !u!135 &3327037181866135067
 SphereCollider:
   m_ObjectHideFlags: 0

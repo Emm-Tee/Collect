@@ -1,6 +1,7 @@
 using Collect.Core.Gameplay;
 using UnityEngine;
 using Collect.Core;
+using static Collect.Core.Gameplay.IHoldCollectable;
 
 namespace Collect.Core.Player
 {
@@ -16,10 +17,10 @@ namespace Collect.Core.Player
         [SerializeField] private Transform _aimTarget;
         [SerializeField] private float _pickUpLength = 5f;
 
-        private CollectionManager _collectionManager;
-
         private RaycastHit _pickupHit;
         private Collectable _heldCollectable;
+
+        private HoldingType _holdingType;
         #endregion
 
         #region Unity Methods
@@ -27,12 +28,17 @@ namespace Collect.Core.Player
         {
             TestPickup();
         }
+
+        private void Awake()
+        {
+            Initialise();
+        }
         #endregion
 
         #region Public Methods
-        public void Initialise(CollectionManager collectionManager)
+        public void Initialise()
         {
-            _collectionManager = collectionManager;
+            _holdingType = _attribute.HoldingType;
         }
 
         public void PickUpCollectable(Collectable collectable)
@@ -48,6 +54,12 @@ namespace Collect.Core.Player
         public Transform GetHoldingTransform()
         {
             return _aimTarget;
+        }
+
+
+        public HoldingType GetHoldingType()
+        {
+            return _holdingType;
         }
 
         public Attribute GetAttribute()

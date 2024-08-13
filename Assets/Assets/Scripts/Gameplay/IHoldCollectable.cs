@@ -6,6 +6,12 @@ namespace Collect.Core.Gameplay
 {
     public interface IHoldCollectable
     {
+        public enum HoldingType
+        {
+            Hard = 0, //Collectable position stuck to holding point, no physics
+            Soft = 1, //Collectable position stuck to holding point but with physics
+            Follow = 2 //Collectable position moves towards holding point if holding
+        }
         #region Unity Methods
         #endregion
 
@@ -15,6 +21,9 @@ namespace Collect.Core.Gameplay
         public void ReleaseCollectable(Collectable collectable);
 
         public Transform GetHoldingTransform();
+
+        public HoldingType GetHoldingType();
+
         public Attribute GetAttribute();
         #endregion
 
