@@ -34,12 +34,14 @@ namespace Collect.Core.Gameplay
 
         public void Activate()
         {
-            _collectable?.Activate();
+            _collectable.Activate();
+            _repository.Activate();
         }
 
         public void Deactivate()
         {
-            _collectable?.Deactivate();
+            _collectable.Deactivate();
+            _repository.Deactivate();
         }
         #endregion
 

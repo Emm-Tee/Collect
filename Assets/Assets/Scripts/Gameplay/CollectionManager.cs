@@ -23,10 +23,6 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Public Methods
-        public static bool CanCollect(Collectable collectable, IHoldCollectable repository)
-        {
-            return collectable.CanCollect(repository);
-        }
         #endregion
 
         #region Protected Methods
@@ -48,13 +44,10 @@ namespace Collect.Core.Gameplay
         #region Event Callbacks
         private void OnAttemptPickup(IHoldCollectable holder, Collectable collectable)
         {
-            if (collectable.CurrentHolder != null)
+            if (collectable.CanCollect(holder))
             {
-                collectable.CurrentHolder.ReleaseCollectable(collectable);
+                CollectableEvents.PickUpComplete?.Invoke(holder, collectable);
             }
-
-            collectable.GetPickedUp(holder);
-            holder.PickUpCollectable(collectable);
         }
 
         private void OnCollectableDropped(IHoldCollectable holder, Collectable collectable)

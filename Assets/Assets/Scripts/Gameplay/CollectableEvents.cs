@@ -12,11 +12,15 @@ namespace Collect.Core.Gameplay
 
         #region Fields
         public delegate void PairDelegate(IHoldCollectable holder, Collectable collectable);
+        public delegate void CollectableDelegate(Collectable collectable);
         public delegate void BlankDelegate();
 
         public static PairDelegate AttemptAtPickUp;
         public static PairDelegate PickUpComplete;
         public static PairDelegate CollectableDropped;
+
+        public static CollectableDelegate CollectableCompleted;
+        public static CollectableDelegate CollectableIncompleted;
 
         public static BlankDelegate LevelComplete;
         #endregion

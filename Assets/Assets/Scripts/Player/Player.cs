@@ -39,6 +39,15 @@ namespace Collect.Core.Player
         public void Initialise()
         {
             _holdingType = _attribute.HoldingType;
+
+            IHoldCollectable holder = this as IHoldCollectable;
+            holder.SubscribeToHolderEvents();
+        }
+
+        private void OnDestroy()
+        {
+            IHoldCollectable holder = this as IHoldCollectable;
+            holder.UnSubscribteToHolderEvents();
         }
 
         public void PickUpCollectable(Collectable collectable)
@@ -56,7 +65,6 @@ namespace Collect.Core.Player
             return _aimTarget;
         }
 
-
         public HoldingType GetHoldingType()
         {
             return _holdingType;
@@ -65,6 +73,11 @@ namespace Collect.Core.Player
         public Attribute GetAttribute()
         {
             return _attribute;
+        }
+
+        public Collectable GetHeldCollectable()
+        {
+            return _heldCollectable;
         }
         #endregion
 
@@ -94,10 +107,8 @@ namespace Collect.Core.Player
 
         private void AttemptPickup(Collectable collectable)
         {
-            if (CollectionManager.CanCollect(collectable, this))
-            {
-                CollectableEvents.AttemptAtPickUp?.Invoke(this, collectable);
-            }
+            //TODO: implement build in cooldown
+            CollectableEvents.AttemptAtPickUp?.Invoke(this, collectable);
         }
         #endregion
 

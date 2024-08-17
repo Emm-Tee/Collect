@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Collect.Core.Gameplay
 {
-    public class AB_Complete : AttributeBehaviour
+    public class CAB_Complete : CollectableAttributeBehaviour
     {
         #region Properties
         #endregion

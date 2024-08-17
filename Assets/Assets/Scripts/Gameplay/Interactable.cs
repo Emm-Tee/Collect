@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Collect.Core.Gameplay
 {
-    public class Interactable : MonoBehaviour
+    public abstract class Interactable : MonoBehaviour
     {
         #region Properties
         public Attribute Attribute => _attribute;
@@ -43,6 +41,16 @@ namespace Collect.Core.Gameplay
 
             UpdateAppearance(false);
         }
+
+        public virtual void Activate()
+        {
+            SubscribeToEvents();
+        }
+
+        public virtual void Deactivate()
+        {
+            UnsubscribeToEvents();
+        }
         #endregion
 
         #region Protected Methods
@@ -67,9 +75,40 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Private Methods
+        protected virtual void SubscribeToEvents()
+        {
+            CollectableEvents.CollectableCompleted += OnCollectableComplete;
+            CollectableEvents.CollectableIncompleted += OnCollectableIncomplete;
+        }
+
+        protected virtual void UnsubscribeToEvents()
+        {
+            CollectableEvents.CollectableCompleted -= OnCollectableComplete;
+            CollectableEvents.CollectableIncompleted -= OnCollectableIncomplete;
+        }
+
+        protected abstract bool IsRelevantToCompletion(Collectable collectable);
         #endregion
 
         #region Event Callbacks
+        protected virtual void OnCollectableComplete(Collectable collectable)
+            //If the completed collectable is one connected to us, then we're completed
+            if (!IsRelevantToCompletion(collectable))
+                return;
+            }
+
+            UpdateAppearance(true);
+        }
+
+        protected virtual void OnCollectableIncomplete(Collectable collectable)
+        {
+            if (!IsRelevantToCompletion(collectable))
+            {
+                return;
+            }
+
+            UpdateAppearance(false);
+        }
         #endregion
     }
 }

@@ -7,7 +7,7 @@ namespace Collect.Core.Gameplay
     public class GameManager : MonoBehaviour
     {
         #region Properties
-        public CollectionManager CollecationManager => _collectionManager;
+        public CollectionManager CollectionManager => _collectionManager;
         public LevelManager LevelManager => _levelManager;
         public CollectableEvents Events => _events;
         #endregion

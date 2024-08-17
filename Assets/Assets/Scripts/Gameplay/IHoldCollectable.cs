@@ -28,12 +28,36 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Protected Methods
-        #endregion
+        public Collectable GetHeldCollectable();
 
-        #region Private Methods
+        public void SubscribeToHolderEvents()
+        {
+            CollectableEvents.PickUpComplete += OnPickupCompleted;
+        }
+
+        public void UnSubscribteToHolderEvents()
+        {
+
+            CollectableEvents.PickUpComplete -= OnPickupCompleted;
+        }
         #endregion
 
         #region Event Callbacks
+        protected void OnPickupCompleted(IHoldCollectable holder, Collectable collectable)
+        {
+            //Test to see if we've been robbed
+            if(collectable == GetHeldCollectable())
+            {
+                ReleaseCollectable(collectable);
+            }
+
+            if(holder != this)
+            {
+                return;
+            }
+
+            PickUpCollectable(collectable);
+        }
         #endregion
     }
 }

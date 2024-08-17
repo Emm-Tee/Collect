@@ -17,7 +17,6 @@ namespace Collect.Core.Gameplay
         [SerializeField] private Transform _collectableHoldingPoint;
 
         private HoldingType _holdingType;
-
         private Collectable _heldCollectable;
 
         private Collider[] _collectableColliders;
@@ -40,12 +39,10 @@ namespace Collect.Core.Gameplay
 
             if (_collectableColliders.Length > 0)
             {
-                if (_collectableColliders[0].gameObject.TryGetComponent<Collectable>(out Collectable collectable))
+                if (_collectableColliders[0].gameObject.TryGetComponent(out Collectable collectable))
                 {
-                    if (CollectionManager.CanCollect(collectable, this))
-                    {
-                        CollectableEvents.AttemptAtPickUp?.Invoke(this, collectable);
-                    }
+                    //TODO : implement cool down
+                    CollectableEvents.AttemptAtPickUp?.Invoke(this, collectable);
                 }
             }
         }
@@ -65,17 +62,26 @@ namespace Collect.Core.Gameplay
             _holdingType = _attribute.HoldingType;
         }
 
+        public override void Activate()
+        {
+            base.Activate();
+
+            IHoldCollectable holder = this as IHoldCollectable;
+            holder.SubscribeToHolderEvents();
+        }
+
+        public override void Deactivate()
+        {
+            base.Deactivate();
+
+            IHoldCollectable holder = this as IHoldCollectable;
+            holder.UnSubscribteToHolderEvents();
+        }
+
         public void PickUpCollectable(Collectable collectable)
         {
+
             _heldCollectable = collectable;
-
-            if (collectable.Attribute.Type == _attribute.Type)
-            {
-                //Trigger success event
-                CollectableEvents.PickUpComplete?.Invoke(this, collectable);
-
-                UpdateAppearance(true);
-            }
         }
 
         public void ReleaseCollectable(Collectable collectable)
@@ -92,9 +98,18 @@ namespace Collect.Core.Gameplay
         {
             return _holdingType;
         }
+
+        public Collectable GetHeldCollectable()
+        {
+            return _heldCollectable;
+        }
         #endregion
 
         #region Protected Methods
+        protected override bool IsRelevantToCompletion(Collectable collectable)
+        {
+            return collectable.AmICompleteWithYou(this);
+        }
         #endregion
 
         #region Private Methods
