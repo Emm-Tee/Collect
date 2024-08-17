@@ -70,6 +70,8 @@ namespace Collect.Core.Player
                 movement = _input.Movement;
             }
 
+            movement += Physics.gravity;
+
             movement *= Time.deltaTime * _moveSpeed;
 
             //camera relative

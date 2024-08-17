@@ -248,9 +248,6 @@ namespace Collect.Core.Gameplay
 
             Vector3 move = Vector3.SmoothDamp(position, _goalPosition, ref _velocity, _moveTime, _lerpSpeed);
             _rigidbody.MovePosition(move);
-
-            Debug.DrawRay(_goalPosition, Vector3.up * 10, Color.magenta);
-            Debug.DrawRay(move, Vector3.up * 10, Color.red);
         }
         #endregion
 
