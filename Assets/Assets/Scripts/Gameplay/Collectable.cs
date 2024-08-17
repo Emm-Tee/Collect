@@ -22,12 +22,12 @@ namespace Collect.Core.Gameplay
         private IHoldCollectable.HoldingType _holdingType;
         private Transform _holderHoldingPosition;
 
-        private Vector3 _goalPosition;
         private Vector3 _velocity;
+        private Vector3 _goalPosition; // Follows the holder more closely - our position gets smoothly lerped to it
 
         private float _pickUpBuffer = 0f;
         private bool _inStasis = true;
-        private float _timeOutOfDropDistance = 0f;
+        private float _timeInDropDistance = 0f;
 
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private SphereCollider _collider;
@@ -36,6 +36,7 @@ namespace Collect.Core.Gameplay
 
         [SerializeField] private float _speed = 1f;
         [SerializeField] private float _moveTime = 1f;
+        [SerializeField] private float _lerpSpeed = 1f;
 
         [SerializeField] private float _dropDistance = 1f;
         [SerializeField] private float _dropTime = 2f;
@@ -52,9 +53,11 @@ namespace Collect.Core.Gameplay
             {
                 _pickUpBuffer -= Time.deltaTime;
             }
+
+            HandleMovement();
         }
 
-        private void FixedUpdate()
+        private void HandleMovement()
         {
             if (_inStasis)
             {
@@ -67,15 +70,21 @@ namespace Collect.Core.Gameplay
                 switch (_holdingType)
                 {
                     case IHoldCollectable.HoldingType.Hard:
-                        MoveHolderHard();
+                        SetGoalHardPosition();
                         break;
                     case IHoldCollectable.HoldingType.Soft:
-                        MoveHolderSoft();
+                        SetGoalSoftPosition();
                         break;
                     case IHoldCollectable.HoldingType.Follow:
-                        MoveHolderFollow();
+                        SetGoalFollowPosition();
                         break;
                 }
+
+                //See if dropped.
+                TestForDropped();
+
+                //Move
+                MovePosition();
             }
         }
         #endregion
@@ -121,6 +130,8 @@ namespace Collect.Core.Gameplay
 
             _pickUpBuffer = PickUpCooldownDuration;
 
+            _goalPosition = transform.position;
+
             //becomes kinematic after being picked up
             SetRigidbodySettings(true);
         }
@@ -129,7 +140,6 @@ namespace Collect.Core.Gameplay
         {
             _holder = null;
             _holderHoldingPosition = null;
-            _goalPosition = Vector3.zero;
 
             SetRigidbodySettings(false);
         }
@@ -171,52 +181,76 @@ namespace Collect.Core.Gameplay
             _inStasis = false;
         }
 
-        private void MoveHolderHard()
+        private void SetGoalHardPosition()
         {
-            transform.position = _holderHoldingPosition.position;
+            //transform.position = _holderHoldingPosition.position;
+            _goalPosition = _holderHoldingPosition.position;
         }
 
-        private void MoveHolderSoft()
+        private void SetGoalSoftPosition()
         {
             Debug.LogWarning($"Soft hold not implemented");
         }
 
-        private void MoveHolderFollow()
+        private void SetGoalFollowPosition()
         {
-            _goalPosition = _holderHoldingPosition.position;
+            Vector3 position = _goalPosition;
+            Vector3 distance = _holderHoldingPosition.position - position;     
 
-            Vector3 position = transform.position;
-
-            Vector3 direction = _goalPosition - position;
-
-            //Test if we've been out of drop distance for long enough to enact drop
-            float sqrDistance = direction.sqrMagnitude;
-            if( sqrDistance > _dropDistance)
+            //don't move if we have immediate blockages
+            if (Physics.Raycast(position, distance, _collider.radius * 1.1f, layerMask: LayerMasks.Environment))
             {
-                _timeOutOfDropDistance += Time.deltaTime;
-                if(_timeOutOfDropDistance > _dropTime)
-                {
-                    CollectableEvents.CollectableDropped?.Invoke(_holder, this);
-                    _timeOutOfDropDistance = 0;
-                    return;
-                }
+                return;
+            }
+
+            Vector3 delta = distance.normalized * _speed * Time.deltaTime; 
+            Vector3 newGoalPosition = position + delta;
+
+            //If we're less than a single step away, go straight to home
+            if(delta.sqrMagnitude > distance.sqrMagnitude)
+            {
+                newGoalPosition = _holderHoldingPosition.position;
+            }
+
+            _goalPosition = newGoalPosition;
+        }
+
+        private void TestForDropped()
+        {
+            Vector3 distance = _holderHoldingPosition.position - _goalPosition;
+            float sqrMag = distance.sqrMagnitude;
+            float drop = _dropDistance * _dropDistance;
+
+            if (sqrMag > drop * 4)
+            {
                 CollectableEvents.CollectableDropped?.Invoke(_holder, this);
                 return;
             }
+            if (sqrMag > drop)
+            {
+                _timeInDropDistance += Time.deltaTime;
+                if (_timeInDropDistance > _dropTime)
+                {
+                    CollectableEvents.CollectableDropped?.Invoke(_holder, this);
+                    _timeInDropDistance = 0;
+                    return;
+                }
+            }
             else
             {
-                _timeOutOfDropDistance = 0;
+                _timeInDropDistance = 0;
             }
+        }
 
-            //don't move if we have immediate blockages
-            if (Physics.Raycast(position, direction, _collider.radius * 1.1f, layerMask: LayerMasks.Environment))
-            {
-                return;
-            }
+        private void MovePosition()
+        {
+            Vector3 position = transform.position;
 
-            Vector3 smooth = Vector3.SmoothDamp(position, _goalPosition, ref _velocity, _moveTime, _speed);
+            Vector3 move = Vector3.SmoothDamp(position, _goalPosition, ref _velocity, _moveTime, _lerpSpeed);
+            _rigidbody.MovePosition(move);
 
-            _rigidbody.MovePosition(smooth);
+            Debug.DrawRay(_goalPosition, Vector3.up * 10, Color.magenta);
+            Debug.DrawRay(move, Vector3.up * 10, Color.red);
         }
         #endregion
 
