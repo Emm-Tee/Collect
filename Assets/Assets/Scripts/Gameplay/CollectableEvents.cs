@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Collect.Core.Gameplay
 {
@@ -17,7 +14,7 @@ namespace Collect.Core.Gameplay
 
         public static PairDelegate AttemptAtPickUp;
         public static PairDelegate PickUpComplete;
-        public static PairDelegate CollectableDropped;
+        public static PairDelegate CollectableReleased;
 
         public static CollectableDelegate CollectableCompleted;
         public static CollectableDelegate CollectableIncompleted;

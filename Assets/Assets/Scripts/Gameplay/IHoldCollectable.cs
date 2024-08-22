@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Collect.Core.Gameplay
@@ -18,46 +16,29 @@ namespace Collect.Core.Gameplay
         #region Public Methods
         public void PickUpCollectable(Collectable collectable);
 
-        public void ReleaseCollectable(Collectable collectable);
-
         public Transform GetHoldingTransform();
 
         public HoldingType GetHoldingType();
 
         public Attribute GetAttribute();
+
+        public void ConditionComplete();
+
+        public void ConditionIncomplete();
+
+        public void ReleaseCollectable()
+        {
+            NullCollectableReference();
+        }
         #endregion
 
         #region Protected Methods
         public Collectable GetHeldCollectable();
 
-        public void SubscribeToHolderEvents()
-        {
-            CollectableEvents.PickUpComplete += OnPickupCompleted;
-        }
-
-        public void UnSubscribteToHolderEvents()
-        {
-
-            CollectableEvents.PickUpComplete -= OnPickupCompleted;
-        }
+        public void NullCollectableReference();
         #endregion
 
         #region Event Callbacks
-        protected void OnPickupCompleted(IHoldCollectable holder, Collectable collectable)
-        {
-            //Test to see if we've been robbed
-            if(collectable == GetHeldCollectable())
-            {
-                ReleaseCollectable(collectable);
-            }
-
-            if(holder != this)
-            {
-                return;
-            }
-
-            PickUpCollectable(collectable);
-        }
         #endregion
     }
 }

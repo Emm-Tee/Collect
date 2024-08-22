@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Collect.Core.Gameplay
@@ -7,6 +5,7 @@ namespace Collect.Core.Gameplay
     public abstract class CollectableAttributeBehaviour : MonoBehaviour
     {
         #region Properties
+        public bool ConditionIsComplete => _conditionComplete;
         #endregion
 
         #region Fields
@@ -40,62 +39,96 @@ namespace Collect.Core.Gameplay
         {
             UnsubscribeToEvents();
         }
-
-        //Base behvaiour is just when we're in the right repository
-        public virtual void CheckConditionComplete()
-        {
-            if (_heldByCorrectRepository)
-            {
-                _conditionComplete = true;
-                Debug.Log($"Collectable complete invoked");
-                CollectableEvents.CollectableCompleted?.Invoke(_collectable);
-            }
-        }
         #endregion
 
         #region Protected Methods    
         #endregion
 
         #region Private Methods
-        private void SubscribeToEvents()
+        protected virtual void SubscribeToEvents()
         {
-            CollectableEvents.AttemptAtPickUp += OnPickUpAttempt;
-            CollectableEvents.PickUpComplete += OnPickUpComplete;
+            CollectableEvents.PickUpComplete += OnPickupComplete;
+            CollectableEvents.CollectableReleased += OnCollectableReleased;
+
+            CollectableEvents.CollectableCompleted += OnCollectableCompleted;
+            CollectableEvents.CollectableIncompleted += OnCollectableIncompleted;
         }
 
-        private void UnsubscribeToEvents()
+        protected virtual void UnsubscribeToEvents()
         {
-            CollectableEvents.AttemptAtPickUp -= OnPickUpAttempt;
-            CollectableEvents.PickUpComplete -= OnPickUpComplete;
+            CollectableEvents.PickUpComplete -= OnPickupComplete;
+            CollectableEvents.CollectableReleased -= OnCollectableReleased;
+
+            CollectableEvents.CollectableCompleted -= OnCollectableCompleted;
+            CollectableEvents.CollectableIncompleted -= OnCollectableIncompleted;
+        }
+
+        //What the attribute does when its complete condition is met
+        protected virtual void AttributeConditionCompleted()
+        {
+
+        }
+
+        protected virtual void AttributeConditionIncompleted()
+        {
+
         }
         #endregion
 
         #region Event Callbacks
-        protected virtual void OnPickUpAttempt(IHoldCollectable holder, Collectable collectable)
+        protected virtual void OnPickupComplete(IHoldCollectable holder, Collectable collectable)
         {
-            //default is to not act if we're not the collectable being picked up
-            if (collectable != _collectable)
-            {
-                return;
-            }
-        }
-
-        protected virtual void OnPickUpComplete(IHoldCollectable holder, Collectable collectable)
-        {
-            //default is to not act if we're not the collectable being picked up
-            if (collectable != _collectable)
+            if(collectable != _collectable)
             {
                 return;
             }
 
-            if(holder.GetAttribute().Type == _collectable.Attribute.Type)
+            if (_collectable.Attribute.HoldingType == holder.GetAttribute().HoldingType)
             {
-                _heldByCorrectRepository = true;
-                Debug.Log($"Collectable Attribute behaviour Held by collectable = true");
+                CollectableEvents.CollectableCompleted?.Invoke(_collectable);
             }
-            CheckConditionComplete();
         }
 
+        protected virtual void OnCollectableReleased(IHoldCollectable holder, Collectable collectable)
+        {
+            // default is to not act if we're not the collectable being picked up
+            if (collectable != _collectable)
+            {
+                return;
+            }
+
+            if (_conditionComplete)
+            {
+                Debug.Log($"Invoking collectable incompleted");
+                CollectableEvents.CollectableIncompleted?.Invoke(collectable);
+            }
+        }
+
+        protected virtual void OnCollectableCompleted(Collectable collectable)
+        {
+            if(collectable != _collectable)
+            {
+                return;
+            }
+
+            _conditionComplete = true;
+            _collectable.ConditionComplete();
+
+            AttributeConditionCompleted();
+        }
+
+        protected virtual void OnCollectableIncompleted(Collectable collectable)
+        {
+            if (collectable != _collectable)
+            {
+                return;
+            }
+
+            _conditionComplete = false;
+            _collectable.ConditionIncomplete();
+
+            AttributeConditionIncompleted();
+        }
         #endregion
     }
 }

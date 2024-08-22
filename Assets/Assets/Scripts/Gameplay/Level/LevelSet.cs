@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Collect.Core.Gameplay
@@ -7,13 +5,13 @@ namespace Collect.Core.Gameplay
     public class LevelSet : MonoBehaviour
     {
         #region Properties
-        public bool LevelComplete
+        public bool ReadyToComplete
         {
             get
             {
                 foreach (InteractablePair pair in _interactablePairings)
                 {
-                    if (!pair.IsMatched)
+                    if (!pair.IsCompleter && !pair.IsMatched)
                     {
                         return false;
                     }

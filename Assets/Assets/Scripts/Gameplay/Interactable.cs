@@ -12,17 +12,14 @@ namespace Collect.Core.Gameplay
         [SerializeField] protected Attribute _attribute;
 
         [Space]
-
         [Header("Appearance")]
         [SerializeField] private MeshRenderer[] _decoratedRenderers;
         [SerializeField] private MeshRenderer[] _postCollectionDecoratedRenderers;
 
         [Space]
-
         [SerializeField] private Material _defaultMaterial;
 
         [Space]
-
         private Material _decorationMaterial;
         #endregion
 
@@ -44,19 +41,16 @@ namespace Collect.Core.Gameplay
 
         public virtual void Activate()
         {
-            SubscribeToEvents();
         }
 
         public virtual void Deactivate()
         {
-            UnsubscribeToEvents();
         }
         #endregion
 
         #region Protected Methods
         protected void UpdateAppearance(bool collected)
         {
-
             Material mat = collected ? _decorationMaterial : _defaultMaterial;
 
             foreach (MeshRenderer renderer in _postCollectionDecoratedRenderers)
@@ -75,40 +69,9 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Private Methods
-        protected virtual void SubscribeToEvents()
-        {
-            CollectableEvents.CollectableCompleted += OnCollectableComplete;
-            CollectableEvents.CollectableIncompleted += OnCollectableIncomplete;
-        }
-
-        protected virtual void UnsubscribeToEvents()
-        {
-            CollectableEvents.CollectableCompleted -= OnCollectableComplete;
-            CollectableEvents.CollectableIncompleted -= OnCollectableIncomplete;
-        }
-
-        protected abstract bool IsRelevantToCompletion(Collectable collectable);
         #endregion
 
         #region Event Callbacks
-        protected virtual void OnCollectableComplete(Collectable collectable)
-            //If the completed collectable is one connected to us, then we're completed
-            if (!IsRelevantToCompletion(collectable))
-                return;
-            }
-
-            UpdateAppearance(true);
-        }
-
-        protected virtual void OnCollectableIncomplete(Collectable collectable)
-        {
-            if (!IsRelevantToCompletion(collectable))
-            {
-                return;
-            }
-
-            UpdateAppearance(false);
-        }
         #endregion
     }
 }

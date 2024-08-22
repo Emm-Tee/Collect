@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static Collect.Core.Gameplay.IHoldCollectable;
 
@@ -62,31 +60,9 @@ namespace Collect.Core.Gameplay
             _holdingType = _attribute.HoldingType;
         }
 
-        public override void Activate()
-        {
-            base.Activate();
-
-            IHoldCollectable holder = this as IHoldCollectable;
-            holder.SubscribeToHolderEvents();
-        }
-
-        public override void Deactivate()
-        {
-            base.Deactivate();
-
-            IHoldCollectable holder = this as IHoldCollectable;
-            holder.UnSubscribteToHolderEvents();
-        }
-
         public void PickUpCollectable(Collectable collectable)
         {
-
             _heldCollectable = collectable;
-        }
-
-        public void ReleaseCollectable(Collectable collectable)
-        {
-            _heldCollectable = null;
         }
 
         public Transform GetHoldingTransform()
@@ -103,13 +79,24 @@ namespace Collect.Core.Gameplay
         {
             return _heldCollectable;
         }
+
+        public void NullCollectableReference()
+        {
+            _heldCollectable = null;
+        }
+
+        public void ConditionComplete()
+        {
+            UpdateAppearance(true);
+        }
+
+        public void ConditionIncomplete()
+        {
+            UpdateAppearance(false);
+        }
         #endregion
 
         #region Protected Methods
-        protected override bool IsRelevantToCompletion(Collectable collectable)
-        {
-            return collectable.AmICompleteWithYou(this);
-        }
         #endregion
 
         #region Private Methods

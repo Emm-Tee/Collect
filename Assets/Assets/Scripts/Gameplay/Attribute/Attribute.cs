@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using Collect.Core.Gameplay;
 using UnityEngine;
-using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "Att_", menuName = "Scriptable Objects/ Attribute")]
 public class Attribute : ScriptableObject
@@ -17,7 +14,7 @@ public class Attribute : ScriptableObject
         Light,
         Key,
         Strength,
-        Complete
+        Completer
     }
     #endregion
 

@@ -5,13 +5,13 @@ namespace Collect.Core.Gameplay
     public class LevelManager : MonoBehaviour
     {
         #region Properties
-        public bool CurrentLevelsCompleted
+        public bool CurrentLevelIsReadyToComplete
         {
             get
             {
                 for (int i = 0; i <= _currentLevelIndex; i++)
                 {
-                    if (!_levels[i].LevelComplete)
+                    if (!_levels[i].ReadyToComplete)
                     {
                         return false;
                     }
@@ -81,7 +81,6 @@ namespace Collect.Core.Gameplay
 
             _levels[_currentLevelIndex].BeginLevelReveal();
         }
-
         #endregion
 
         #region Event Callbacks

@@ -37,7 +37,7 @@ namespace Collect.Core.Gameplay
         private float _timeInDropDistance = 0f;
 
         private HoldingType _holdingType;
-        protected Transform _holderHoldingPosition;
+        protected Transform _holderHoldingTransform;
         #endregion
 
         #region Unity Methods
@@ -61,7 +61,6 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Private Methods
-
         private void SetRigidbodySettings(bool held)
         {
             if (held && !_rigidbody.isKinematic)
@@ -83,7 +82,7 @@ namespace Collect.Core.Gameplay
                 return;
             }
 
-            if (_holderHoldingPosition != null)
+            if (_holderHoldingTransform != null)
             {
                 switch (_holdingType)
                 {
@@ -109,7 +108,7 @@ namespace Collect.Core.Gameplay
         private void SetGoalHardPosition()
         {
             //transform.position = _holderHoldingPosition.position;
-            _goalPosition = _holderHoldingPosition.position;
+            _goalPosition = _holderHoldingTransform.position;
         }
 
         private void SetGoalSoftPosition()
@@ -120,7 +119,7 @@ namespace Collect.Core.Gameplay
         private void SetGoalFollowPosition()
         {
             Vector3 position = _goalPosition;
-            Vector3 distance = _holderHoldingPosition.position - position;
+            Vector3 distance = _holderHoldingTransform.position - position;
 
             //don't move if we have immediate blockages
             if (Physics.Raycast(position, distance, _collider.radius * 1.1f, layerMask: LayerMasks.Environment))
@@ -134,7 +133,7 @@ namespace Collect.Core.Gameplay
             //If we're less than a single step away, go straight to home
             if (delta.sqrMagnitude > distance.sqrMagnitude)
             {
-                newGoalPosition = _holderHoldingPosition.position;
+                newGoalPosition = _holderHoldingTransform.position;
             }
 
             _goalPosition = newGoalPosition;
@@ -150,13 +149,13 @@ namespace Collect.Core.Gameplay
 
         private void TestForDropped()
         {
-            Vector3 distance = _holderHoldingPosition.position - _goalPosition;
+            Vector3 distance = _holderHoldingTransform.position - _goalPosition;
             float sqrMag = distance.sqrMagnitude;
             float drop = _dropDistance * _dropDistance;
 
             if (sqrMag > drop * 4)
             {
-                CollectableEvents.CollectableDropped?.Invoke(_holder, this);
+                CollectableEvents.CollectableReleased?.Invoke(_holder, this);
                 return;
             }
             if (sqrMag > drop)
@@ -164,7 +163,7 @@ namespace Collect.Core.Gameplay
                 _timeInDropDistance += Time.deltaTime;
                 if (_timeInDropDistance > _dropTime)
                 {
-                    CollectableEvents.CollectableDropped?.Invoke(_holder, this);
+                    CollectableEvents.CollectableReleased?.Invoke(_holder, this);
                     _timeInDropDistance = 0;
                     return;
                 }
@@ -173,6 +172,19 @@ namespace Collect.Core.Gameplay
             {
                 _timeInDropDistance = 0;
             }
+        }
+
+        private void SetKinematicStasis()
+        {
+            _rigidbody.useGravity = false;
+            _rigidbody.isKinematic = false;
+            _inStasis = true;
+            ToggleCollider(true);
+        }
+
+        private void ToggleCollider(bool enable)
+        {
+            _collider.enabled = enable;
         }
         #endregion
 

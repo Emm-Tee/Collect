@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Collect.Core.Gameplay
@@ -8,7 +6,8 @@ namespace Collect.Core.Gameplay
     public class InteractablePair : MonoBehaviour
     {
         #region Properties
-        public bool IsMatched => _repository.IsMatched;
+        public bool IsMatched => _collectable.IsComplete;
+        public bool IsCompleter => _attribute.Type == Attribute.AttributeTypes.Completer;
         #endregion
 
         #region Fields

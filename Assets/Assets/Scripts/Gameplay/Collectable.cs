@@ -6,12 +6,17 @@ namespace Collect.Core.Gameplay
     {
         #region Properties
         public IHoldCollectable CurrentHolder => _holder;
+        public IHoldCollectable CompletedWithHolder => _completedWithHolder;
+
+        public bool IsComplete => _behaviour.ConditionIsComplete;
+        public bool IsHeld => _holder != null;
         #endregion
 
         #region Fields
         private CollectableAttributeBehaviour _behaviour;
 
         private IHoldCollectable _holder;
+        private IHoldCollectable _completedWithHolder;
         #endregion
 
         #region Unity Methods
@@ -46,37 +51,45 @@ namespace Collect.Core.Gameplay
             return _pickUpBuffer <= 0f;
         }
 
-        public void BeDropped()
+        public void BeReleased()
         {
             _holder = null;
-            _holderHoldingPosition = null;
+            _holderHoldingTransform = null;
 
             SetRigidbodySettings(false);
         }
 
-        public bool AmICompleteWithYou(IHoldCollectable holder)
+        public void GetCollected(IHoldCollectable holder)
         {
-            return holder == _holder;
+            _holder = holder;
+
+            //becomes kinematic after being picked up
+            SetRigidbodySettings(true);
+
+            //Set up movement
+            _holderHoldingTransform = _holder.GetHoldingTransform();
+            _holdingType = _holder.GetHoldingType();
+            _pickUpBuffer = PickUpCooldownDuration;
+            _goalPosition = transform.position;
+        }
+
+        public void ConditionComplete()
+        {
+            _holder.ConditionComplete();
+
+            _completedWithHolder = _holder;
+            UpdateAppearance(true);
+        }
+
+        public void ConditionIncomplete()
+        {
+            _completedWithHolder.ConditionIncomplete();
+            _completedWithHolder = null;
+            UpdateAppearance(false);
         }
         #endregion
 
         #region Protected Methods
-        protected override void SubscribeToEvents()
-        {
-            base.SubscribeToEvents();
-            CollectableEvents.PickUpComplete += OnPickupComplete;
-        }
-
-        protected override void UnsubscribeToEvents()
-        {
-            base.UnsubscribeToEvents();
-            CollectableEvents.PickUpComplete -= OnPickupComplete;
-        }
-
-        protected override bool IsRelevantToCompletion(Collectable collectable)
-        {
-            return collectable == this;
-        }
         #endregion
 
         #region Private Methods
@@ -84,48 +97,15 @@ namespace Collect.Core.Gameplay
         {
             switch (_attribute.Type)
             {
-                case Attribute.AttributeTypes.Complete:
-                    return gameObject.AddComponent<CAB_Complete>();
+                case Attribute.AttributeTypes.Completer:
+                    return gameObject.AddComponent<CAB_Completer>();
                 default:
                     return gameObject.AddComponent<AB_Base>();
             }
         }
-
-        private void SetKinematicStasis()
-        {
-            _rigidbody.useGravity = false;
-            _rigidbody.isKinematic = false;
-            _inStasis = true;
-            ToggleCollider(true);
-        }
-
-        private void ToggleCollider(bool enable)
-        {
-            _collider.enabled = enable;
-        }
         #endregion
 
         #region Event Callbacks
-        private void OnPickupComplete(IHoldCollectable holder, Collectable collectable)
-        {
-            if(collectable != this)
-            {
-                return;
-            }
-
-            _holder = holder;
-
-            //becomes kinematic after being picked up
-            SetRigidbodySettings(true);
-
-            _behaviour.CheckConditionComplete();
-
-            //Set up movement
-            _holderHoldingPosition = _holder.GetHoldingTransform();
-            _holdingType = _holder.GetHoldingType();
-            _pickUpBuffer = PickUpCooldownDuration;
-            _goalPosition = transform.position;
-        }
         #endregion
     }
 }

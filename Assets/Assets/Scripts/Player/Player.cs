@@ -1,6 +1,5 @@
 using Collect.Core.Gameplay;
 using UnityEngine;
-using Collect.Core;
 using static Collect.Core.Gameplay.IHoldCollectable;
 
 namespace Collect.Core.Player
@@ -39,25 +38,11 @@ namespace Collect.Core.Player
         public void Initialise()
         {
             _holdingType = _attribute.HoldingType;
-
-            IHoldCollectable holder = this as IHoldCollectable;
-            holder.SubscribeToHolderEvents();
-        }
-
-        private void OnDestroy()
-        {
-            IHoldCollectable holder = this as IHoldCollectable;
-            holder.UnSubscribteToHolderEvents();
         }
 
         public void PickUpCollectable(Collectable collectable)
         {
             _heldCollectable = collectable;
-        }
-
-        public void ReleaseCollectable(Collectable collectable)
-        {
-            _heldCollectable = null;
         }
 
         public Transform GetHoldingTransform()
@@ -79,9 +64,24 @@ namespace Collect.Core.Player
         {
             return _heldCollectable;
         }
+
+        public void NullCollectableReference()
+        {
+            _heldCollectable = null;
+        }
+
+        public void ConditionComplete()
+        {
+            //nothing to do here
+        }
+
+        public void ConditionIncomplete()
+        {
+            //Nothing to see here
+        }
         #endregion
 
-        #region Protected Methods
+        #region Protected 
         #endregion
 
         #region Private Methods

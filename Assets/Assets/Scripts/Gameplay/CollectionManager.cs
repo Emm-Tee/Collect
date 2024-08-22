@@ -32,28 +32,40 @@ namespace Collect.Core.Gameplay
         private void SubscribeToEvents()
         {
             CollectableEvents.AttemptAtPickUp += OnAttemptPickup;
-            CollectableEvents.CollectableDropped += OnCollectableDropped;
         }
 
         private void UnsubscribeToEvents()
         {
             CollectableEvents.AttemptAtPickUp -= OnAttemptPickup;
         }
+
+        private void ReleaseCollectable(IHoldCollectable holder, Collectable collectable)
+        {
+            holder.ReleaseCollectable();
+            collectable.BeReleased();
+
+            CollectableEvents.CollectableReleased?.Invoke(holder, collectable);
+        }
         #endregion
 
         #region Event Callbacks
         private void OnAttemptPickup(IHoldCollectable holder, Collectable collectable)
         {
-            if (collectable.CanCollect(holder))
+            if (!collectable.CanCollect(holder))
             {
-                CollectableEvents.PickUpComplete?.Invoke(holder, collectable);
+                return;
             }
-        }
 
-        private void OnCollectableDropped(IHoldCollectable holder, Collectable collectable)
-        {
-            collectable.BeDropped();
-            holder.ReleaseCollectable(collectable);
+            if (collectable.IsHeld)
+            {
+                ReleaseCollectable(collectable.CurrentHolder, collectable);
+            }
+
+            //Set data
+            collectable.GetCollected(holder);
+            holder.PickUpCollectable(collectable);
+
+            CollectableEvents.PickUpComplete?.Invoke(holder, collectable);
         }
         #endregion
     }
