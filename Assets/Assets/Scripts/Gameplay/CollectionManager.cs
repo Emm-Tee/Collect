@@ -38,6 +38,7 @@ namespace Collect.Core.Gameplay
         private void UnsubscribeToEvents()
         {
             CollectableEvents.AttemptAtPickUp -= OnAttemptPickup;
+            CollectableEvents.AttemptReleaseCollectable -= OnAttemptRelease;
         }
         #endregion
 

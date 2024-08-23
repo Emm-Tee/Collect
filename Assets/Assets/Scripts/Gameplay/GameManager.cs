@@ -23,6 +23,14 @@ namespace Collect.Core.Gameplay
         {
             _levelManager.Initialise(this);
         }
+
+        private void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                ResetLevel();
+            }
+        }
         #endregion
 
         #region Public Methods
@@ -32,6 +40,12 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Private Methods
+        private void ResetLevel()
+        {
+            _levelManager.ResetLevel();
+            CollectableEvents.ResetLevelEvent?.Invoke();
+            
+        }
         #endregion
 
         #region Event Callbacks

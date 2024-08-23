@@ -20,6 +20,7 @@ namespace Collect.Core.Player
         private Collectable _heldCollectable;
 
         private HoldingType _holdingType;
+        private IHoldCollectable _holder;
         #endregion
 
         #region Unity Methods
@@ -31,6 +32,14 @@ namespace Collect.Core.Player
         private void Awake()
         {
             Initialise();
+            CollectableEvents.ResetLevelEvent += OnReset;
+
+            _holder = this;
+        }
+
+        private void OnDisable()
+        {
+            CollectableEvents.ResetLevelEvent -= OnReset;
         }
         #endregion
 
@@ -81,7 +90,7 @@ namespace Collect.Core.Player
         }
         #endregion
 
-        #region Protected 
+        #region Protected
         #endregion
 
         #region Private Methods
@@ -113,6 +122,10 @@ namespace Collect.Core.Player
         #endregion
 
         #region Event Callbacks
+        private void OnReset()
+        {
+            _holder.ReleaseCollectable();
+        }
         #endregion
     }
 }

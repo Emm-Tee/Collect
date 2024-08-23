@@ -76,6 +76,14 @@ namespace Collect.Core.Gameplay
         {
             ToggleRevealLevel(true);
         }
+
+        public void ResetLevel()
+        {
+            foreach (InteractablePair pair in _interactablePairings)
+            {
+                pair.Reset();
+            }
+        }
         #endregion
 
         #region Protected Methods

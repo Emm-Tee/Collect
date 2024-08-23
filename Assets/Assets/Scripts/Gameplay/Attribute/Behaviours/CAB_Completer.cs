@@ -8,7 +8,6 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Fields
-        private bool _isMatched = false;
         #endregion
 
         #region Unity Methods
@@ -19,10 +18,10 @@ namespace Collect.Core.Gameplay
         {
             if (collectable == _collectable && IsMatchingPair(holder, collectable))
             {
-                _isMatched = true;
+                _heldByCorrectRepository = true;
             }
 
-            if (_isMatched && _gameManager.LevelManager.CurrentLevelIsReadyToComplete)
+            if (_heldByCorrectRepository && _gameManager.LevelManager.CurrentLevelIsReadyToComplete)
             {
                 CollectableEvents.CollectableCompleted?.Invoke(_collectable);
             }

@@ -22,6 +22,7 @@ namespace Collect.Core.Gameplay
         public static CollectableDelegate CollectableIncompleted;
 
         public static BlankDelegate LevelComplete;
+        public static BlankDelegate ResetLevelEvent;
         #endregion
 
         #region Unity Methods

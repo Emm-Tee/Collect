@@ -14,14 +14,20 @@ namespace Collect.Core.Gameplay
 
         [SerializeField] private Transform _collectableHoldingPoint;
 
+        private IHoldCollectable _holder;
+
         private HoldingType _holdingType;
         private Collectable _heldCollectable;
 
         private Collider[] _collectableColliders;
-
         #endregion
 
         #region Unity Methods
+        private void Awake()
+        {
+            _holder = this;
+        }
+
         private void Update()
         {
             if (_heldCollectable)
@@ -93,6 +99,13 @@ namespace Collect.Core.Gameplay
         public void ConditionIncomplete()
         {
             UpdateAppearance(false);
+        }
+
+        public override void TotalReset()
+        {
+            base.TotalReset();
+
+            _holder.ReleaseCollectable();
         }
         #endregion
 

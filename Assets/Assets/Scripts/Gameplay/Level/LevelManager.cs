@@ -52,6 +52,11 @@ namespace Collect.Core.Gameplay
 
             InitialiseLevels();
         }
+
+        public void ResetLevel()
+        {
+            _levels[_currentLevelIndex].ResetLevel();
+        }
         #endregion
 
         #region Protected Methods

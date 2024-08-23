@@ -33,6 +33,8 @@ namespace Collect.Core.Gameplay
         private Vector3 _velocity;
         private Vector3 _goalPosition; // Follows the holder more closely - our position gets smoothly lerped to it
 
+        private Vector3 _originalPosition;
+
         private float _pickUpBuffer = 0f;
         private float _timeInDropDistance = 0f;
 
@@ -55,6 +57,28 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Public Methods
+        public void ResetPosition(bool putInStasis)
+        {
+            _rigidbody.MovePosition(_originalPosition);
+            transform.position = _originalPosition;
+
+            if (putInStasis)
+            {
+                SetKinematicStasis();
+            }
+        }
+
+        public override void TotalReset()
+        {
+            base.TotalReset();
+
+            _holderHoldingTransform = null;
+            _goalPosition = transform.position;
+            
+            ResetPosition(true);
+
+            _behaviour.Reset();
+        }
         #endregion
 
         #region Protected Methods
@@ -79,6 +103,7 @@ namespace Collect.Core.Gameplay
             if (_inStasis)
             {
                 _rigidbody.velocity = Vector3.zero;
+                _rigidbody.MovePosition(transform.position);
                 return;
             }
 

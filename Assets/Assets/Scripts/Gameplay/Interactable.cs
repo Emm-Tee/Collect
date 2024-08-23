@@ -46,6 +46,11 @@ namespace Collect.Core.Gameplay
         public virtual void Deactivate()
         {
         }
+
+        public virtual void TotalReset()
+        {
+            UpdateAppearance(false);
+        }
         #endregion
 
         #region Protected Methods

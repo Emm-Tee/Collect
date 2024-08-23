@@ -38,6 +38,8 @@ namespace Collect.Core.Gameplay
             base.Activate();
             _behaviour?.Activate();
             SetKinematicStasis();
+
+            _originalPosition = transform.position;
         }
 
         public override void Deactivate()

@@ -42,6 +42,12 @@ namespace Collect.Core.Gameplay
             _collectable.Deactivate();
             _repository.Deactivate();
         }
+
+        public void Reset()
+        {
+            _collectable.TotalReset();
+            _repository.TotalReset();
+        }
         #endregion
 
         #region Protected Methods

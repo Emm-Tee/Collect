@@ -39,6 +39,12 @@ namespace Collect.Core.Gameplay
         {
             UnsubscribeToEvents();
         }
+
+        public virtual void Reset()
+        {
+            _heldByCorrectRepository = false;
+            _conditionComplete = false;
+        }
         #endregion
 
         #region Protected Methods    
@@ -76,7 +82,7 @@ namespace Collect.Core.Gameplay
 
         protected bool IsMatchingPair(IHoldCollectable holder, Collectable collectable)
         {
-            return collectable.Attribute.HoldingType == holder.GetAttribute().HoldingType;
+            return collectable.Attribute.Type == holder.GetAttribute().Type;
         }
         #endregion
 
