@@ -8,6 +8,7 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Fields
+        private bool _isMatched = false;
         #endregion
 
         #region Unity Methods
@@ -16,7 +17,12 @@ namespace Collect.Core.Gameplay
         #region Public Methods
         protected override void OnPickupComplete(IHoldCollectable holder, Collectable collectable)
         {
-            if (_gameManager.LevelManager.CurrentLevelIsReadyToComplete)
+            if (collectable == _collectable && IsMatchingPair(holder, collectable))
+            {
+                _isMatched = true;
+            }
+
+            if (_isMatched && _gameManager.LevelManager.CurrentLevelIsReadyToComplete)
             {
                 CollectableEvents.CollectableCompleted?.Invoke(_collectable);
             }

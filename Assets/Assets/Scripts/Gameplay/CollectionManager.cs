@@ -32,19 +32,12 @@ namespace Collect.Core.Gameplay
         private void SubscribeToEvents()
         {
             CollectableEvents.AttemptAtPickUp += OnAttemptPickup;
+            CollectableEvents.AttemptReleaseCollectable += OnAttemptRelease;
         }
 
         private void UnsubscribeToEvents()
         {
             CollectableEvents.AttemptAtPickUp -= OnAttemptPickup;
-        }
-
-        private void ReleaseCollectable(IHoldCollectable holder, Collectable collectable)
-        {
-            holder.ReleaseCollectable();
-            collectable.BeReleased();
-
-            CollectableEvents.CollectableReleased?.Invoke(holder, collectable);
         }
         #endregion
 
@@ -58,7 +51,7 @@ namespace Collect.Core.Gameplay
 
             if (collectable.IsHeld)
             {
-                ReleaseCollectable(collectable.CurrentHolder, collectable);
+                CollectableEvents.AttemptReleaseCollectable?.Invoke(collectable.CurrentHolder, collectable);
             }
 
             //Set data
@@ -66,6 +59,14 @@ namespace Collect.Core.Gameplay
             holder.PickUpCollectable(collectable);
 
             CollectableEvents.PickUpComplete?.Invoke(holder, collectable);
+        }
+
+        private void OnAttemptRelease(IHoldCollectable holder, Collectable collectable)
+        {
+            holder.ReleaseCollectable();
+            collectable.BeReleased();
+
+            CollectableEvents.CollectableReleased?.Invoke(holder, collectable);
         }
         #endregion
     }

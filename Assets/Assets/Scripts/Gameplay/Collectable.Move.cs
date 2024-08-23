@@ -155,7 +155,7 @@ namespace Collect.Core.Gameplay
 
             if (sqrMag > drop * 4)
             {
-                CollectableEvents.CollectableReleased?.Invoke(_holder, this);
+                CollectableEvents.AttemptReleaseCollectable?.Invoke(_holder, this);
                 return;
             }
             if (sqrMag > drop)
@@ -163,7 +163,7 @@ namespace Collect.Core.Gameplay
                 _timeInDropDistance += Time.deltaTime;
                 if (_timeInDropDistance > _dropTime)
                 {
-                    CollectableEvents.CollectableReleased?.Invoke(_holder, this);
+                    CollectableEvents.AttemptReleaseCollectable?.Invoke(_holder, this);
                     _timeInDropDistance = 0;
                     return;
                 }

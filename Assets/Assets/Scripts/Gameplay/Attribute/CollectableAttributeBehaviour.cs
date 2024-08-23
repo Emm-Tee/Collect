@@ -73,6 +73,11 @@ namespace Collect.Core.Gameplay
         {
 
         }
+
+        protected bool IsMatchingPair(IHoldCollectable holder, Collectable collectable)
+        {
+            return collectable.Attribute.HoldingType == holder.GetAttribute().HoldingType;
+        }
         #endregion
 
         #region Event Callbacks
@@ -83,7 +88,7 @@ namespace Collect.Core.Gameplay
                 return;
             }
 
-            if (_collectable.Attribute.HoldingType == holder.GetAttribute().HoldingType)
+            if (IsMatchingPair(holder, collectable))
             {
                 CollectableEvents.CollectableCompleted?.Invoke(_collectable);
             }

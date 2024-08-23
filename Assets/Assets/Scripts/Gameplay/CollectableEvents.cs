@@ -14,6 +14,8 @@ namespace Collect.Core.Gameplay
 
         public static PairDelegate AttemptAtPickUp;
         public static PairDelegate PickUpComplete;
+
+        public static PairDelegate AttemptReleaseCollectable;
         public static PairDelegate CollectableReleased;
 
         public static CollectableDelegate CollectableCompleted;
