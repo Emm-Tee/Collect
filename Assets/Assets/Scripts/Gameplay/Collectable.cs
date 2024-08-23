@@ -44,6 +44,7 @@ namespace Collect.Core.Gameplay
         {
             base.Deactivate();
             _behaviour?.Deactivate();
+            ToggleCollider(false);
         }
 
         public bool CanCollect(IHoldCollectable repository)
