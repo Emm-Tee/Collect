@@ -10,6 +10,8 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Fields
+        [SerializeField] private bool _isPlayer = false;
+
         [SerializeField] private float _detectionRadius;
 
         [SerializeField] private Transform _collectableHoldingPoint;
@@ -79,6 +81,11 @@ namespace Collect.Core.Gameplay
         public HoldingType GetHoldingType()
         {
             return _holdingType;
+        }
+
+        public bool GetIsPlayer()
+        {
+            return _isPlayer;
         }
 
         public Collectable GetHeldCollectable()

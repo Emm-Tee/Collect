@@ -11,16 +11,17 @@ namespace Collect.Core.Player
 
         #region Fields
         [SerializeField] private Attribute _attribute;
+        [SerializeField] private bool _isPlayer = false;
 
         [Header("Collectable")]
         [SerializeField] private Transform _aimTarget;
         [SerializeField] private float _pickUpLength = 5f;
 
+        private IHoldCollectable _holder;
         private RaycastHit _pickupHit;
         private Collectable _heldCollectable;
 
         private HoldingType _holdingType;
-        private IHoldCollectable _holder;
         #endregion
 
         #region Unity Methods
@@ -62,6 +63,11 @@ namespace Collect.Core.Player
         public HoldingType GetHoldingType()
         {
             return _holdingType;
+        }
+
+        public bool GetIsPlayer()
+        {
+            return _isPlayer;
         }
 
         public Attribute GetAttribute()

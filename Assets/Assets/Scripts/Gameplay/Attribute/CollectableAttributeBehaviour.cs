@@ -45,6 +45,21 @@ namespace Collect.Core.Gameplay
             _heldByCorrectRepository = false;
             _conditionComplete = false;
         }
+
+        public virtual void UpdateBehaviour()
+        {
+            //Base does nothing
+        }
+
+        public virtual void GetCollected()
+        {
+
+        }
+
+        public virtual void BeReleased()
+        {
+
+        }
         #endregion
 
         #region Protected Methods    

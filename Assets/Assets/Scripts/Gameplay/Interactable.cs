@@ -17,10 +17,11 @@ namespace Collect.Core.Gameplay
         [SerializeField] private MeshRenderer[] _postCollectionDecoratedRenderers;
 
         [Space]
-        [SerializeField] private Material _defaultMaterial;
+        [SerializeField] protected Material _plainMaterialPrefab;
 
         [Space]
-        private Material _decorationMaterial;
+        protected Material _attributeMaterial;
+        protected Material plainMaterial;
         #endregion
 
         #region Unity Methods
@@ -31,10 +32,12 @@ namespace Collect.Core.Gameplay
         {
             _attribute = attribute;
 
-            _decorationMaterial = new Material(_attribute.Material)
+            _attributeMaterial = new Material(_attribute.Material)
             {
                 color = _attribute.Color
             };
+
+            plainMaterial = new Material(_plainMaterialPrefab);
 
             UpdateAppearance(false);
         }
@@ -56,18 +59,19 @@ namespace Collect.Core.Gameplay
         #region Protected Methods
         protected void UpdateAppearance(bool collected)
         {
-            Material mat = collected ? _decorationMaterial : _defaultMaterial;
+            Material mat = collected ? _attributeMaterial : plainMaterial;
 
             foreach (MeshRenderer renderer in _postCollectionDecoratedRenderers)
             {
                 renderer.material = mat;
             }
 
+            //Some parts are decorated with 
             if(!collected)
             {
                 foreach (MeshRenderer renderer in _decoratedRenderers)
                 {
-                    renderer.material = _decorationMaterial;
+                    renderer.material = _attributeMaterial;
                 }
             }
         }

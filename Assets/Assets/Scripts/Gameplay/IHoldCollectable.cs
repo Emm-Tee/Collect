@@ -20,6 +20,8 @@ namespace Collect.Core.Gameplay
 
         public HoldingType GetHoldingType();
 
+        public bool GetIsPlayer();
+
         public Attribute GetAttribute();
 
         public void ConditionComplete();

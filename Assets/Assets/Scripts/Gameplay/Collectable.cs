@@ -1,7 +1,11 @@
 using UnityEngine;
+using static Attribute.AttributeTypes;
 
 namespace Collect.Core.Gameplay
 {
+    /// <summary>
+    /// Base partial class contains the core interactable things - collectable specific additions in other files
+    /// </summary>
     public partial class Collectable : Interactable
     {
         #region Properties
@@ -17,9 +21,27 @@ namespace Collect.Core.Gameplay
 
         private IHoldCollectable _holder;
         private IHoldCollectable _completedWithHolder;
+
+        private bool _active = false;
         #endregion
 
         #region Unity Methods
+        private void Update()
+        {
+            if (!_active)
+            {
+                return;
+            }
+
+            _behaviour.UpdateBehaviour();
+
+            if (_pickUpBuffer > 0f)
+            {
+                _pickUpBuffer -= Time.deltaTime;
+            }
+
+            HandleMovement();
+        }
         #endregion
 
         #region Public Methods
@@ -40,6 +62,8 @@ namespace Collect.Core.Gameplay
             SetKinematicStasis();
 
             _originalPosition = transform.position;
+
+            _active = true;
         }
 
         public override void Deactivate()
@@ -47,19 +71,13 @@ namespace Collect.Core.Gameplay
             base.Deactivate();
             _behaviour?.Deactivate();
             ToggleCollider(false);
+
+            _active = false;
         }
 
         public bool CanCollect(IHoldCollectable repository)
         {
             return _pickUpBuffer <= 0f;
-        }
-
-        public void BeReleased()
-        {
-            _holder = null;
-            _holderHoldingTransform = null;
-
-            SetRigidbodySettings(false);
         }
 
         public void GetCollected(IHoldCollectable holder)
@@ -74,6 +92,18 @@ namespace Collect.Core.Gameplay
             _holdingType = _holder.GetHoldingType();
             _pickUpBuffer = PickUpCooldownDuration;
             _goalPosition = transform.position;
+
+            _behaviour.GetCollected();
+        }
+
+        public void BeReleased()
+        {
+            _holder = null;
+            _holderHoldingTransform = null;
+
+            SetRigidbodySettings(false);
+
+            _behaviour.BeReleased();
         }
 
         public void ConditionComplete()
@@ -100,10 +130,12 @@ namespace Collect.Core.Gameplay
         {
             switch (_attribute.Type)
             {
-                case Attribute.AttributeTypes.Completer:
+                case Completer:
                     return gameObject.AddComponent<CAB_Completer>();
+                case Timer:
+                    return gameObject.AddComponent<CAB_Timer>();
                 default:
-                    return gameObject.AddComponent<AB_Base>();
+                    return gameObject.AddComponent<CAB_Base>();
             }
         }
         #endregion

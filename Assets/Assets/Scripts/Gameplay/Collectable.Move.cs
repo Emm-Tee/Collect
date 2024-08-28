@@ -43,17 +43,6 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Unity Methods
-
-        private void Update()
-        {
-            if (_pickUpBuffer > 0f)
-            {
-                _pickUpBuffer -= Time.deltaTime;
-            }
-
-            HandleMovement();
-        }
-
         #endregion
 
         #region Public Methods

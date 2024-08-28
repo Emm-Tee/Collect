@@ -83,6 +83,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attribute: {fileID: 11400000, guid: 8075c45440f784944b57b6dd8a8fb1f1, type: 2}
+  _isPlayer: 1
   _aimTarget: {fileID: 3782091541165865191}
   _pickUpLength: 5
 --- !u!114 &5425504619416401527

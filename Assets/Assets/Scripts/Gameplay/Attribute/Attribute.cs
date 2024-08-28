@@ -12,6 +12,7 @@ public class Attribute : ScriptableObject
         Blue,
         Speed,
         Light,
+        Timer,
         Key,
         Strength,
         Completer

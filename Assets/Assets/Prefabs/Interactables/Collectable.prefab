@@ -103,7 +103,8 @@ MonoBehaviour:
   - {fileID: 1275813143089010733}
   _postCollectionDecoratedRenderers:
   - {fileID: 1275813143089010733}
-  _defaultMaterial: {fileID: 2100000, guid: 1135175e6eb6e164ea7c250ca0b27910, type: 2}
+  _plainMaterialPrefab: {fileID: 2100000, guid: 627ad00a5abd17b4c999152a52acb07a,
+    type: 2}
   _rigidbody: {fileID: 8920322589533742299}
   _collider: {fileID: 3327037181866135067}
   _speed: 80

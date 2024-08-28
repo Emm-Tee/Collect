@@ -115,7 +115,9 @@ MonoBehaviour:
   - {fileID: 3498939347258809290}
   _postCollectionDecoratedRenderers:
   - {fileID: 379380086532498956}
-  _defaultMaterial: {fileID: 2100000, guid: 1135175e6eb6e164ea7c250ca0b27910, type: 2}
+  _plainMaterialPrefab: {fileID: 2100000, guid: 627ad00a5abd17b4c999152a52acb07a,
+    type: 2}
+  _isPlayer: 0
   _detectionRadius: 1
   _collectableHoldingPoint: {fileID: 7463247248274698136}
 --- !u!1 &7404929281124368469
