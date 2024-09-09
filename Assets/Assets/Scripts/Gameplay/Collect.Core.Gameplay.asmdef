@@ -2,7 +2,8 @@
     "name": "Collect.Core.Gameplay",
     "rootNamespace": "",
     "references": [
-        "GUID:019f23c901f133745b63229bdd41939c"
+        "GUID:019f23c901f133745b63229bdd41939c",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

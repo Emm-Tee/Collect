@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Collect.Core.Player
+namespace Collect.Core.Gameplay
 {
     public class PlayerInputManager : MonoBehaviour
     {

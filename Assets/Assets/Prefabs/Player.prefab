@@ -86,6 +86,32 @@ MonoBehaviour:
   _isPlayer: 1
   _aimTarget: {fileID: 3782091541165865191}
   _pickUpLength: 5
+  _temperatureRadius: 3
+  _bodyTemp: 27
+  _bodyTempDispersionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.07961324
+      outSlope: 0.07961324
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.18423307
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.06434548
+      outSlope: -0.06434548
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.7233661
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &5425504619416401527
 MonoBehaviour:
   m_ObjectHideFlags: 0

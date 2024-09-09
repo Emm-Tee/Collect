@@ -2,9 +2,9 @@ using Collect.Core.Gameplay;
 using UnityEngine;
 using static Collect.Core.Gameplay.IHoldCollectable;
 
-namespace Collect.Core.Player
+namespace Collect.Core.Gameplay
 {
-    public class Player : MonoBehaviour, IHoldCollectable
+    public class Player : MonoBehaviour, IHoldCollectable, IContributeToTemperature
     {
         #region Properties
         #endregion
@@ -17,11 +17,22 @@ namespace Collect.Core.Player
         [SerializeField] private Transform _aimTarget;
         [SerializeField] private float _pickUpLength = 5f;
 
-        private IHoldCollectable _holder;
-        private RaycastHit _pickupHit;
-        private Collectable _heldCollectable;
 
+        [Header("Temperature")]
+        [SerializeField] private float _temperatureRadius;
+        [SerializeField] private float _bodyTemp;
+        [SerializeField] private AnimationCurve _bodyTempDispersionCurve;
+
+        GameManager _gameManager;
+
+        //Interfaces
+        private IHoldCollectable _holder;
+        private IContributeToTemperature _temp;
+
+        private Collectable _heldCollectable;
         private HoldingType _holdingType;
+
+        private RaycastHit _pickupHit;
         #endregion
 
         #region Unity Methods
@@ -32,22 +43,25 @@ namespace Collect.Core.Player
 
         private void Awake()
         {
-            Initialise();
             CollectableEvents.ResetLevelEvent += OnReset;
 
             _holder = this;
+            _temp = this;
         }
 
         private void OnDisable()
         {
             CollectableEvents.ResetLevelEvent -= OnReset;
+            _temp.DeregisterSelfFromTemperatureManager(_gameManager.TemperatureManager);
         }
         #endregion
 
         #region Public Methods
-        public void Initialise()
+        public void Initialise(GameManager gameManager)
         {
+            _gameManager = gameManager;
             _holdingType = _attribute.HoldingType;
+            _temp.RegisterSelfToTemperatureManager(_gameManager.TemperatureManager);
         }
 
         public void PickUpCollectable(Collectable collectable)
@@ -94,6 +108,15 @@ namespace Collect.Core.Player
         {
             //Nothing to see here
         }
+
+        //Some body heat
+        public float GetTempModifierAtPosition(Vector3 position)
+        {
+            float sqrDistance = (position - transform.position).sqrMagnitude;
+            float distPercent = Mathf.InverseLerp(0, _temperatureRadius * _temperatureRadius, sqrDistance);
+
+            return _bodyTemp * _bodyTempDispersionCurve.Evaluate(distPercent);
+        }
         #endregion
 
         #region Protected
@@ -122,7 +145,7 @@ namespace Collect.Core.Player
 
         private void AttemptPickup(Collectable collectable)
         {
-            //TODO: implement build in cooldown
+            //TODO: implement built in cooldown
             CollectableEvents.AttemptAtPickUp?.Invoke(this, collectable);
         }
         #endregion

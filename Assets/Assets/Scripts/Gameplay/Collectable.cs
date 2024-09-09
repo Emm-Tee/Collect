@@ -133,7 +133,7 @@ namespace Collect.Core.Gameplay
                 case Completer:
                     return gameObject.AddComponent<CAB_Completer>();
                 case Timer:
-                    return gameObject.AddComponent<CAB_Timer>();
+                    return gameObject.AddComponent<CAB_Melt>();
                 default:
                     return gameObject.AddComponent<CAB_Base>();
             }

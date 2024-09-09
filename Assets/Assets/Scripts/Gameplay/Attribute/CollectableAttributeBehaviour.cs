@@ -84,12 +84,17 @@ namespace Collect.Core.Gameplay
             CollectableEvents.CollectableIncompleted -= OnCollectableIncompleted;
         }
 
-        //What the attribute does when its complete condition is met
+        /// <summary>
+        /// Called internally when the complete condition is met - overridden per behaviour
+        /// </summary>
         protected virtual void AttributeConditionCompleted()
         {
 
         }
 
+        /// <summary>
+        /// Called internally when the complete condition gets unmet - overridden per behaviour
+        /// </summary>
         protected virtual void AttributeConditionIncompleted()
         {
 
@@ -102,6 +107,11 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Event Callbacks
+        /// <summary>
+        /// Subscribes to event that triggers when the Collection Manager finished the process of a collectable being picked up by an IHoldCollectable holder
+        /// </summary>
+        /// <param name="holder"></param>
+        /// <param name="collectable"></param>
         protected virtual void OnPickupComplete(IHoldCollectable holder, Collectable collectable)
         {
             if(collectable != _collectable)
@@ -115,6 +125,11 @@ namespace Collect.Core.Gameplay
             }
         }
 
+        /// <summary>
+        /// SUbscribes to event triggered when an IHoldCollectable holder stops holding a collectable
+        /// </summary>
+        /// <param name="holder"></param>
+        /// <param name="collectable"></param>
         protected virtual void OnCollectableReleased(IHoldCollectable holder, Collectable collectable)
         {
             // default is to not act if we're not the collectable being picked up
@@ -130,6 +145,11 @@ namespace Collect.Core.Gameplay
             }
         }
 
+        /// <summary>
+        /// Subscribes to event triggered when a collectable's end condition is completed. 
+        /// AttributeConditionCompleted is what a behaviour should use to do things when our condition is completed
+        /// </summary>
+        /// <param name="collectable"></param>
         protected virtual void OnCollectableCompleted(Collectable collectable)
         {
             if(collectable != _collectable)
@@ -143,6 +163,11 @@ namespace Collect.Core.Gameplay
             AttributeConditionCompleted();
         }
 
+        /// <summary>
+        /// Subscribes to event triggered when a collectable whose end condition was completed becomes incomplete. 
+        /// AttributeConditionIncompleted is what a behaviour should probably use to do things when our condition is incompleted
+        /// </summary>
+        /// <param name="collectable"></param>
         protected virtual void OnCollectableIncompleted(Collectable collectable)
         {
             if (collectable != _collectable)
