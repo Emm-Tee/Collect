@@ -2,6 +2,10 @@ using UnityEngine;
 
 namespace Collect.Core.Gameplay
 {
+    /// <summary>
+    /// Handles bespoke behaviour of the attribute.
+    /// Created manually in Collectable.cs CreateBehaviour() - each new CAB_ class needs to be added there
+    /// </summary>
     public abstract class CollectableAttributeBehaviour : MonoBehaviour
     {
         #region Properties
@@ -85,19 +89,19 @@ namespace Collect.Core.Gameplay
         }
 
         /// <summary>
-        /// Called internally when the complete condition is met - overridden per behaviour
+        /// Called internally when the complete condition is met, inherited behaviours add to it
         /// </summary>
         protected virtual void AttributeConditionCompleted()
         {
-
+            _collectable.UpdateAppearance(true);
         }
 
         /// <summary>
-        /// Called internally when the complete condition gets unmet - overridden per behaviour
+        /// Called internally when the complete condition gets unmet, inherited behaviours add to it
         /// </summary>
         protected virtual void AttributeConditionIncompleted()
         {
-
+            _collectable.UpdateAppearance(false);
         }
 
         protected bool IsMatchingPair(IHoldCollectable holder, Collectable collectable)

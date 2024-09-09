@@ -1,4 +1,3 @@
-using Collect.Core.Gameplay;
 using UnityEngine;
 using static Collect.Core.Gameplay.IHoldCollectable;
 
@@ -10,7 +9,7 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Fields
-        [SerializeField] private Attribute _attribute;
+        [SerializeField] private AttributeSO _attribute;
         [SerializeField] private bool _isPlayer = false;
 
         [Header("Collectable")]
@@ -84,7 +83,7 @@ namespace Collect.Core.Gameplay
             return _isPlayer;
         }
 
-        public Attribute GetAttribute()
+        public AttributeSO GetAttribute()
         {
             return _attribute;
         }

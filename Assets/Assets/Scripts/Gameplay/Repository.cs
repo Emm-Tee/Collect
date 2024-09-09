@@ -56,12 +56,12 @@ namespace Collect.Core.Gameplay
 
         #region Public Methods
 
-        public Attribute GetAttribute()
+        public AttributeSO GetAttribute()
         {
             return _attribute;
         }
 
-        public override void Initialise(Attribute attribute)
+        public override void Initialise(AttributeSO attribute)
         {
             base.Initialise(attribute);
 

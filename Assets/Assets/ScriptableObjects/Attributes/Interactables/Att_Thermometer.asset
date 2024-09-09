@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 177005abc288e284fb03fa880fc9a217, type: 3}
-  m_Name: Att_Timer
+  m_Name: Att_Thermometer
   m_EditorClassIdentifier: 
-  _type: 5
+  _dataSet: {fileID: 11400000, guid: 0b25f67f7caaecb4f806a0b9e943e98d, type: 2}
+  _type: 6
   _holdingType: 0
-  _color: {r: 0.3786924, g: 0.8628177, b: 0.9287212, a: 1}
-  _material: {fileID: 2100000, guid: e6fc38f1078932145b273045da5bc801, type: 2}
+  _color: {r: 1, g: 1, b: 1, a: 1}
+  _material: {fileID: 2100000, guid: 627ad00a5abd17b4c999152a52acb07a, type: 2}

@@ -1,5 +1,5 @@
 using UnityEngine;
-using static Attribute.AttributeTypes;
+using static Collect.Core.Gameplay.AttributeSO.AttributeTypes;
 
 namespace Collect.Core.Gameplay
 {
@@ -45,7 +45,7 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Public Methods
-        public void Initialise(Attribute attribute, GameManager gameManager)
+        public void Initialise(AttributeSO attribute, GameManager gameManager)
         {
             base.Initialise(attribute);
 
@@ -111,14 +111,12 @@ namespace Collect.Core.Gameplay
             _holder.ConditionComplete();
 
             _completedWithHolder = _holder;
-            UpdateAppearance(true);
         }
 
         public void ConditionIncomplete()
         {
             _completedWithHolder.ConditionIncomplete();
             _completedWithHolder = null;
-            UpdateAppearance(false);
         }
         #endregion
 
@@ -132,8 +130,10 @@ namespace Collect.Core.Gameplay
             {
                 case Completer:
                     return gameObject.AddComponent<CAB_Completer>();
-                case Timer:
+                case Melt:
                     return gameObject.AddComponent<CAB_Melt>();
+                case Thermometer:
+                    return gameObject.AddComponent<CAB_Thermometer>();
                 default:
                     return gameObject.AddComponent<CAB_Base>();
             }

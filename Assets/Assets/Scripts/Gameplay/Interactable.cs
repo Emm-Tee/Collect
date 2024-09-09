@@ -5,11 +5,11 @@ namespace Collect.Core.Gameplay
     public abstract class Interactable : MonoBehaviour
     {
         #region Properties
-        public Attribute Attribute => _attribute;
+        public AttributeSO Attribute => _attribute;
         #endregion
 
         #region Fields
-        [SerializeField] protected Attribute _attribute;
+        [SerializeField] protected AttributeSO _attribute;
 
         [Space]
         [Header("Appearance")]
@@ -28,7 +28,7 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Public Methods
-        public virtual void Initialise(Attribute attribute)
+        public virtual void Initialise(AttributeSO attribute)
         {
             _attribute = attribute;
 
@@ -57,7 +57,7 @@ namespace Collect.Core.Gameplay
         #endregion
 
         #region Protected Methods
-        protected void UpdateAppearance(bool collected)
+        public void UpdateAppearance(bool collected)
         {
             Material mat = collected ? _attributeMaterial : plainMaterial;
 

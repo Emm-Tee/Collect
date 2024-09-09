@@ -22,7 +22,7 @@ namespace Collect.Core.Gameplay
 
         public bool GetIsPlayer();
 
-        public Attribute GetAttribute();
+        public AttributeSO GetAttribute();
 
         public void ConditionComplete();
 

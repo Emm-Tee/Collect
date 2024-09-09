@@ -7,6 +7,9 @@ namespace Collect.Core.Gameplay
     public class TemperatureManager : MonoBehaviour
     {
         #region Constants
+        public static float MaxTemp = 50;
+        public static float MinTemp = -20;
+
         private const float BaseTemp = 15f;
         #endregion
 
@@ -21,6 +24,8 @@ namespace Collect.Core.Gameplay
         private List<IContributeToTemperature> _contributors = new List<IContributeToTemperature>();
 
         [SerializeField] private float _meltRate = 0.2f;
+
+        [SerializeField] private float _debugTempMod = 0f;
         #endregion
 
         #region Unity Methods
@@ -55,7 +60,7 @@ namespace Collect.Core.Gameplay
         }
         public float GetTemperatureAtPosition(Vector3 position)
         {
-            float tempAtPosition = _currentTemperature;
+            float tempAtPosition = _currentTemperature + _debugTempMod;
             foreach(IContributeToTemperature contributor in  _contributors)
             {
                 tempAtPosition += contributor.GetTempModifierAtPosition(position);

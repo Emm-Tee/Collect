@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Collect.Core.Gameplay
 {
     public class CAB_Completer : CollectableAttributeBehaviour
@@ -29,6 +27,7 @@ namespace Collect.Core.Gameplay
 
         protected override void AttributeConditionCompleted()
         {
+            base.AttributeConditionCompleted();
             CollectableEvents.LevelComplete();
         }
         #endregion

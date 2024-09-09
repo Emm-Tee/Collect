@@ -7,13 +7,13 @@ namespace Collect.Core.Gameplay
     {
         #region Properties
         public bool IsMatched => _collectable.IsComplete;
-        public bool IsCompleter => _attribute.Type == Attribute.AttributeTypes.Completer;
+        public bool IsCompleter => _attribute.Type == AttributeSO.AttributeTypes.Completer;
         #endregion
 
         #region Fields
         [SerializeField] private Repository _repository;
         [SerializeField] private Collectable _collectable;
-        [SerializeField] private Attribute _attribute;
+        [SerializeField] private AttributeSO _attribute;
         #endregion
 
         #region Unity Methods
