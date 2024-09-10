@@ -30,7 +30,6 @@ namespace Collect.Core.Gameplay
         {
             base.Initialize(collectable, gameManager);
             _temperatureData = _collectable.Attribute.DataSet as DS_TemperatureSO;
-            Debug.Log($"Trying to get attribute data here and it is :: {_temperatureData != null}",this);
         }
 
         public override void Activate()
