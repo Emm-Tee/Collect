@@ -3,7 +3,7 @@ using static Collect.Core.Gameplay.IHoldCollectable;
 
 namespace Collect.Core.Gameplay
 {
-    public class Player : MonoBehaviour, IHoldCollectable, IContributeToTemperature
+    public class Player : MonoBehaviour, IHoldCollectable, IInfluenceTemperature
     {
         #region Properties
         #endregion
@@ -19,14 +19,14 @@ namespace Collect.Core.Gameplay
 
         [Header("Temperature")]
         [SerializeField] private float _temperatureRadius;
-        [SerializeField] private float _bodyTemp;
+        [SerializeField] private float _bodyTemperature;
         [SerializeField] private AnimationCurve _bodyTempDispersionCurve;
 
         GameManager _gameManager;
 
         //Interfaces
         private IHoldCollectable _holder;
-        private IContributeToTemperature _temp;
+        private IInfluenceTemperature _temp;
 
         private Collectable _heldCollectable;
         private HoldingType _holdingType;
@@ -108,13 +108,25 @@ namespace Collect.Core.Gameplay
             //Nothing to see here
         }
 
-        //Some body heat
-        public float GetTempModifierAtPosition(Vector3 position)
+        //Body heat + rate at which it transfers into the world
+        public bool TryGetTemperatureInfluenceAtPosition(Vector3 position, out float maxTemp, out float distanceWeight)
         {
-            float sqrDistance = (position - transform.position).sqrMagnitude;
-            float distPercent = Mathf.InverseLerp(0, _temperatureRadius * _temperatureRadius, sqrDistance);
+            distanceWeight = 0;
+            maxTemp = _bodyTemperature;
 
-            return _bodyTemp * _bodyTempDispersionCurve.Evaluate(distPercent);
+            float sqrDistance = (position - transform.position).sqrMagnitude;
+            float sqrRadius = _temperatureRadius * _temperatureRadius;
+
+            //too far away, not influencing temp
+            if(sqrDistance > sqrRadius)
+            {
+                return false;
+            }
+
+            float distPercent = Mathf.InverseLerp(0, sqrRadius, sqrDistance);
+            distanceWeight = _bodyTempDispersionCurve.Evaluate(distPercent);
+
+            return true;
         }
         #endregion
 

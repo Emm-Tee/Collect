@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,9 +18,9 @@ namespace Collect.Core.Gameplay
 
         #region Fields
         private float _baseRoomTemperature;
-        private float _currentTemperature;
+        private float _ambiantTemperature;
 
-        private List<IContributeToTemperature> _contributors = new List<IContributeToTemperature>();
+        private List<IInfluenceTemperature> _contributors = new List<IInfluenceTemperature>();
 
         [SerializeField] private float _meltRate = 0.2f;
 
@@ -34,10 +33,10 @@ namespace Collect.Core.Gameplay
         #region Public Methods
         public void Initialise()
         {
-            _currentTemperature = BaseTemp;
+            _ambiantTemperature = BaseTemp;
         }
 
-        public void RegisterContributor(IContributeToTemperature contributor)
+        public void RegisterContributor(IInfluenceTemperature contributor)
         {
             if (_contributors.Contains(contributor))
             {
@@ -48,7 +47,7 @@ namespace Collect.Core.Gameplay
             _contributors.Add(contributor);
         }
 
-        public void DeregisterContributor(IContributeToTemperature contributor)
+        public void DeregisterContributor(IInfluenceTemperature contributor)
         {
             if (!_contributors.Contains(contributor))
             {
@@ -60,12 +59,23 @@ namespace Collect.Core.Gameplay
         }
         public float GetTemperatureAtPosition(Vector3 position)
         {
-            float tempAtPosition = _currentTemperature + _debugTempMod;
-            foreach(IContributeToTemperature contributor in  _contributors)
+            //Temperatures with greater weights have greater influence on the current temperature, achieved by adding it to the value to be averaged more times per weight
+
+            float tempAtPosition = _ambiantTemperature;
+
+            foreach (IInfluenceTemperature contributor in _contributors)
             {
-                tempAtPosition += contributor.GetTempModifierAtPosition(position);
+                if(contributor.TryGetTemperatureInfluenceAtPosition(position, out float temperature, out float distanceWeight))
+                {
+                    float tempDelta = temperature - _ambiantTemperature;
+
+                    float tempInfluence = tempDelta * distanceWeight;
+
+                    tempAtPosition += tempInfluence;
+                }
             }
-            return tempAtPosition;
+
+            return tempAtPosition + _debugTempMod;
         }
         #endregion
 

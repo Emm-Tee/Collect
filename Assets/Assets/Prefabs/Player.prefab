@@ -86,8 +86,8 @@ MonoBehaviour:
   _isPlayer: 1
   _aimTarget: {fileID: 3782091541165865191}
   _pickUpLength: 5
-  _temperatureRadius: 3
-  _bodyTemp: 27
+  _temperatureRadius: 4
+  _bodyTemperature: 37
   _bodyTempDispersionCurve:
     serializedVersion: 2
     m_Curve:

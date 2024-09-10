@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Collect.Core.Gameplay
 {
-    public interface IContributeToTemperature
+    public interface IInfluenceTemperature
     {
         #region Properties
         #endregion
@@ -24,7 +24,14 @@ namespace Collect.Core.Gameplay
             temperatureManager.DeregisterContributor(this);
         }
 
-        public float GetTempModifierAtPosition(Vector3 position);
+        /// <summary>
+        /// Gets the temperature of a temperature influencer, as well as a weight between 1 and 0 showing how strongly that temperature is influencing the temperature at our position
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="temp"></param>
+        /// <param name="distanceWeight"></param>
+        /// <returns></returns>
+        public bool TryGetTemperatureInfluenceAtPosition(Vector3 position, out float temp, out float distanceWeight);
         #endregion
 
         #region Protected Methods
