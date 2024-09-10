@@ -134,6 +134,8 @@ namespace Collect.Core.Gameplay
                     return gameObject.AddComponent<CAB_Melt>();
                 case Thermometer:
                     return gameObject.AddComponent<CAB_Thermometer>();
+                case TemperatureChanger:
+                    return gameObject.AddComponent<CAB_TemperatureChanger>();
                 default:
                     return gameObject.AddComponent<CAB_Base>();
             }

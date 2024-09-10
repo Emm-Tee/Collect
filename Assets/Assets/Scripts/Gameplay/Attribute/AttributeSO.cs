@@ -19,6 +19,7 @@ namespace Collect.Core.Gameplay
             Light,
             Melt,
             Thermometer,
+            TemperatureChanger,
             Key,
             Strength,
             Completer
